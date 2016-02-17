@@ -22,9 +22,32 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 import main.models.RewardEvent;
+import main.models.RewardEventDB;
 
 @Path("/rewards")
 public class Rewards {
+	
+	RewardEventDB rewardEventDB = new RewardEventDB();
+
+	@GET
+	@Path("/testdata")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response createTestData() throws JSONException{
+		JSONObject jsonResponse = new JSONObject();
+		
+		createRewardEventTestData();
+		
+		try {
+			jsonResponse.put("rewardEventTestData", "created");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block/events
+			e.printStackTrace();
+		}
+		
+		return Response.status(Response.Status.OK).entity(jsonResponse).build();
+		
+	}
 
 	@GET
 	@Path("/eventtypes")
@@ -306,6 +329,12 @@ public class Rewards {
 		ary.add("luck");
 
 		return ary;
+		
+	}
+	
+	private void createRewardEventTestData() {
+		
+		rewardEventDB.createRewardEventRecords();
 		
 	}
 	
