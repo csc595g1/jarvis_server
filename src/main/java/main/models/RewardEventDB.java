@@ -71,7 +71,7 @@ public class RewardEventDB {
             		+ ",'maintenance'"
             		+ ",5"
             		+ ",'Sump Pump Maintenance'"
-            		+"',CURRENT_TIMESTAMP);";
+            		+ ",'now');";
             statement = connection.createStatement();
             statement.execute(sql);
             System.out.println("INSERT INTO " + TABLE_REWARD_EVENTS + " test1@test.com");
@@ -88,7 +88,7 @@ public class RewardEventDB {
             		+ ",'maintenance'"
             		+ ",5"
             		+ ",'Water Heater Maintenance'"
-            		+"',CURRENT_TIMESTAMP);";
+            		+ ",'now');";
             statement = connection.createStatement();
             statement.execute(sql);
             System.out.println("INSERT INTO " + TABLE_REWARD_EVENTS + " test2@test.com");
@@ -105,7 +105,7 @@ public class RewardEventDB {
             		+ ",'article'"
             		+ ",10"
             		+ ",'Article on Sump Pump Maintenance'"
-            		+"',CURRENT_TIMESTAMP);";
+            		+ ",'now');";
             statement = connection.createStatement();
             statement.execute(sql);
             System.out.println("INSERT INTO " + TABLE_REWARD_EVENTS + " test3@test.com");
@@ -122,7 +122,7 @@ public class RewardEventDB {
             		+ ",'appointment'"
             		+ ",10"
             		+ ",'Appointment for Sump Pump Maintenance'"
-            		+"',CURRENT_TIMESTAMP);";
+            		+ ",'now');";
             statement = connection.createStatement();
             statement.execute(sql);
             System.out.println("INSERT INTO " + TABLE_REWARD_EVENTS + " test3@test.com");
