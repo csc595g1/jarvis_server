@@ -35,7 +35,8 @@ public class CreateAccountService {
             firstName = input.getString("firstName");
             lastName = input.getString("lastName");
             returnBool = new UserLoginDB().createAccount(email, pw, firstName, lastName);
-            if(returnBool = true){
+            System.out.println("CreateAccount: " + returnBool);
+            if(returnBool == true){
                 retJson.put("accountCreated", "true");
                 return Response.status(Response.Status.OK).entity(retJson).build();
             }
