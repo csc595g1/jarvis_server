@@ -99,6 +99,69 @@ public class UserLoginDB {
         }
     }
     
+    public AuthMessage googleLogin(String email, String name){
+        AuthMessage returnAuth = new AuthMessage();
+        String sql = "select count(*) AS retcount from " + TABLE_NAME_USER + " where user_email = '" + email + "';";
+        int count = 0;
+        try{
+            connection = getConnection();
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+                count = rs.getInt("retcount");
+            }
+            connection.close();
+            stmt.clearBatch();
+            stmt.close();
+            if(count > 0){
+                String temppw = "";
+                sql = "select user_pw from " + TABLE_NAME_USER + " where user_email = '" + email + "';";
+                connection = getConnection();
+                stmt = connection.createStatement();
+                ResultSet r = stmt.executeQuery(sql);
+                while(r.next()){
+                    temppw = r.getString(1);
+                }
+                connection.close();
+                if(temppw.equals("google")){
+                    return new AuthMessage(true,"successful login");
+                }
+                else{
+                    return new AuthMessage(false,"user not set for google auth!");
+                }
+            }
+            else{
+                connection.close();
+                stmt.clearBatch();
+                stmt.close();
+                String[] temp = name.split(" ");
+                boolean success = false;
+                if(temp.length > 1){
+                    String tempfirst = temp[0];
+                    String templast = temp[1];
+                    success = createAccount(email, "google", tempfirst, templast);
+                }
+                else{
+                    success = createAccount(email, "google", name, " ");
+                }
+                if(success){
+                    return new AuthMessage(true,"successful login");
+                }
+                else{
+                    return new AuthMessage(false,"Unsuccessul auth for " + email);
+                }
+            }
+        }
+        catch(URISyntaxException e){
+            e.getMessage();
+            e.printStackTrace();}
+        catch(SQLException e){
+            e.getMessage();
+            e.printStackTrace();
+        }
+        return returnAuth;
+    }
+    
     public AuthMessage authUser(String user, String pw){
         boolean auth = false;
         AuthMessage authm = new AuthMessage();

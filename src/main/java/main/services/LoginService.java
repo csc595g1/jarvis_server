@@ -23,9 +23,9 @@ public class LoginService {
     //url: https://......../login?user=USERNAMEHERE&pw=PWHERE
     
     @GET
-    @Path("/getNames")
+    @Path("/getName")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getNames(@QueryParam("email") String email) throws JSONException{
+    public Response getName(@QueryParam("email") String email) throws JSONException{
         UserLogin temp;
         JSONObject resp = new JSONObject();
         if(email != null){
@@ -45,6 +45,43 @@ public class LoginService {
         }
     }
     
+    @POST
+    @Path("/googlelogin")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response googleLogin(String json) throws JSONException{
+        //incoming fields: "email","name"
+        //outgoing: "auth","message"
+        JSONObject input = new JSONObject(json);
+        JSONObject returnJson = new JSONObject();
+        
+        String email = "";
+        String name = "";
+        
+        if(input.has("email")){
+            email = input.getString("email");
+        }
+        else{
+            returnJson.put("auth",false);
+            returnJson.put("message", "incorrect JSON field passed.");
+            return Response.status(Response.Status.OK).entity(returnJson).build();
+        }
+        
+        if(input.has("name")){
+            name = input.getString("name");
+        }
+        else{
+            returnJson.put("auth",false);
+            returnJson.put("message", "incorrect JSON field passed.");
+            return Response.status(Response.Status.OK).entity(returnJson).build();
+        }
+        
+        AuthMessage auth = new UserLoginDB().googleLogin(email, name);
+        returnJson.put("auth", auth.auth);
+        returnJson.put("message", auth.message);
+        
+        return Response.status(Response.Status.OK).entity(returnJson).build();
+    }
     
     @POST
     @Produces(MediaType.APPLICATION_JSON)
