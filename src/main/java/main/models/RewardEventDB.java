@@ -57,6 +57,7 @@ public class RewardEventDB {
     }
     
     public boolean insertRewardEvent(RewardEvent event){
+        System.out.println("insertrewardevent called...");
         boolean isCreated = false;
         int count = 0;
         String sql;
