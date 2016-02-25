@@ -75,6 +75,7 @@ public class RewardEventDB {
             		+ ",'now');";
             statement = connection.createStatement();
             isCreated = statement.execute(sql);
+            System.out.println("isCreate = " + isCreated);
             System.out.println("INSERT INTO " + TABLE_REWARD_EVENTS + " "+ event.getUserId());
             
             statement.clearBatch();
@@ -82,11 +83,13 @@ public class RewardEventDB {
             connection.close();
         }
             catch(URISyntaxException e){
+                System.out.println("caught URIexception");
             e.getMessage();
             e.printStackTrace();
             return false;
             }
         catch(SQLException e){
+            System.out.println("caught sql exception");
             e.getMessage();
             e.printStackTrace();
         return false;
