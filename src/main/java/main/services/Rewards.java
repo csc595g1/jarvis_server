@@ -119,6 +119,7 @@ public class Rewards {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createRewardEvent(String requestJson) throws JSONException{
             System.out.println("web request to create a reward event");
+            System.out.println(requestJson);
 		JSONObject jsonRequest = new JSONObject(requestJson);
 		JSONObject jsonResponse = new JSONObject();
 		RewardEvent createRewardEvent = null;
