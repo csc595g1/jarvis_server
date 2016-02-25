@@ -1,5 +1,6 @@
 package main.services;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -135,8 +136,14 @@ public class Rewards {
 									jsonRequest.getInt("units"),
 									jsonRequest.getString("title"),
 									"");
-                        
+                        try{
 			success = rewardEventDB.insertRewardEvent(createRewardEvent);
+                        }
+                        catch(SQLException e){
+                            System.out.println("sql exception in service");
+                            e.getMessage();
+                            e.printStackTrace();
+                        }
                         System.out.println("success = " + success);
 		}
 
