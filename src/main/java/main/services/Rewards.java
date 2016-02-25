@@ -121,6 +121,7 @@ public class Rewards {
 		JSONObject jsonRequest = new JSONObject(requestJson);
 		JSONObject jsonResponse = new JSONObject();
 		RewardEvent createRewardEvent = null;
+                boolean success = false;
 		
 		if (jsonRequest.has("userId") &&
 				jsonRequest.has("eventCategory") &&
@@ -132,19 +133,21 @@ public class Rewards {
 									jsonRequest.getInt("units"),
 									jsonRequest.getString("title"),
 									"");
-			
+                        
+			success = rewardEventDB.insertRewardEvent(createRewardEvent);
+                        System.out.println("success = " + success);
 		}
 
-		RewardEvent rewardEvent = createRewardEvent(createRewardEvent);
-		
+		//RewardEvent rewardEvent = createRewardEvent(createRewardEvent);
+		//boolean success = rewardEventDB.insertRewardEvent(createRewardEvent);
 		try {
-			if (rewardEvent != null) {
-				jsonResponse.put("eventId", rewardEvent.getEventId());
-				jsonResponse.put("userId", rewardEvent.getUserId());
-				jsonResponse.put("eventCategory", rewardEvent.getEventCategory());
-				jsonResponse.put("units", rewardEvent.getUnits().toString());
-				jsonResponse.put("title", rewardEvent.getTitle());
-				jsonResponse.put("tstamp", rewardEvent.getTstamp());
+			if (success) {
+				jsonResponse.put("eventId", "00000");
+				jsonResponse.put("userId", createRewardEvent.getUserId());
+				jsonResponse.put("eventCategory", createRewardEvent.getEventCategory());
+				jsonResponse.put("units", createRewardEvent.getUnits().toString());
+				jsonResponse.put("title", createRewardEvent.getTitle());
+				jsonResponse.put("tstamp", createRewardEvent.getTstamp());
 				jsonResponse.put("eventCreated", Boolean.TRUE.toString());
 			}
 		} catch (JSONException e) {
@@ -152,7 +155,12 @@ public class Rewards {
 			e.printStackTrace();
 		}
 		
+                if(success){
 		return Response.status(Response.Status.OK).entity(jsonResponse).build();
+                }
+                else{
+                    return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+                }
 		
 	}
 

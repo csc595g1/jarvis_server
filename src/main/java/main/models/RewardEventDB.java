@@ -56,6 +56,43 @@ public class RewardEventDB {
         }
     }
     
+    public boolean insertRewardEvent(RewardEvent event){
+        boolean isCreated = false;
+        int count = 0;
+        String sql;
+        
+        try{
+        	Statement statement;
+            connection = getConnection();        
+            sql = "INSERT INTO " 
+            		+ TABLE_REWARD_EVENTS 
+            		+ " (userId,eventCategory,units,title,tstamp) VALUES ("
+            		+ " '"+event.getUserId()+"'"
+            		+ ",'"+event.getEventCategory()+"'"
+            		+ ","+event.getUnits()
+            		+ ",'"+event.getTitle()+"'"
+            		+ ",'now');";
+            statement = connection.createStatement();
+            isCreated = statement.execute(sql);
+            System.out.println("INSERT INTO " + TABLE_REWARD_EVENTS + " "+ event.getUserId());
+            
+            statement.clearBatch();
+            statement.close();
+            connection.close();
+        }
+            catch(URISyntaxException e){
+            e.getMessage();
+            e.printStackTrace();
+            return false;
+            }
+        catch(SQLException e){
+            e.getMessage();
+            e.printStackTrace();
+        return false;
+        }
+        return isCreated;
+    }
+    
     public Boolean createRewardEventRecords() {
         boolean isCreated = false;
         int count = 0;
