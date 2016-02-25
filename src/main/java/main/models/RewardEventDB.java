@@ -56,7 +56,7 @@ public class RewardEventDB {
         }
     }
     
-    public boolean insertRewardEvent(RewardEvent event){
+    public boolean insertRewardEvent(RewardEvent event) throws SQLException{
         System.out.println("insertrewardevent called...");
         boolean isCreated = false;
         int count = 0;
@@ -74,13 +74,15 @@ public class RewardEventDB {
             		+ ",'"+event.getTitle()+"'"
             		+ ",'now');";
             statement = connection.createStatement();
-            isCreated = statement.execute(sql);
+            //isCreated = statement.execute(sql);
+            statement.executeUpdate(sql);
             System.out.println("isCreate = " + isCreated);
             System.out.println("INSERT INTO " + TABLE_REWARD_EVENTS + " "+ event.getUserId());
             
             statement.clearBatch();
             statement.close();
             connection.close();
+            isCreated = true;
         }
             catch(URISyntaxException e){
                 System.out.println("caught URIexception");
@@ -94,6 +96,7 @@ public class RewardEventDB {
             e.printStackTrace();
         return false;
         }
+        finally{connection.close();}
         return isCreated;
     }
     
