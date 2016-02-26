@@ -212,6 +212,27 @@ public class UserLoginDB {
         return new AuthMessage(false,"Incorrect Password/User");
     }
     
+    public boolean deleteUserFromTable(String email){
+        String sql = "delete from " + TABLE_NAME_USER + " where user_email = '" + email + "';";
+        boolean ret = false;
+        try{
+            connection = getConnection();
+            Statement stmt = connection.createStatement();
+            stmt.executeUpdate(sql);
+            ret = true;
+        }
+        catch(URISyntaxException e){
+            ret = false;
+            e.getMessage();
+            e.printStackTrace();}
+        catch(SQLException e){
+            ret = false;
+            e.getMessage();
+            e.printStackTrace();
+        }
+        return ret;
+    }
+    
     //public void insertUserAcctRow()
     
     //create if not exitsts
@@ -255,6 +276,7 @@ public class UserLoginDB {
             e.getMessage();
             e.printStackTrace();}
     }
+    
     
     private static Connection getConnection() throws URISyntaxException, SQLException {
         

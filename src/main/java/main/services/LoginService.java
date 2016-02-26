@@ -122,4 +122,17 @@ public class LoginService {
         returnJson.put("message", isAuthed.message);
         return Response.status(Response.Status.OK).entity(returnJson).build();
     }
+    
+    //temp method! only uncomment when needed to do table maintenance!
+    @Path("/delete")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    //@Consumes(MediaType.APPLICATION_JSON)
+    public Response delete(@QueryParam("email") String email) throws JSONException {
+        boolean ret = false;
+        ret = new UserLoginDB().deleteUserFromTable(email);
+        JSONObject obj = new JSONObject();
+        obj.put("success", ret);
+        return Response.status(Response.Status.OK).entity(obj).build();
+    }
 }
