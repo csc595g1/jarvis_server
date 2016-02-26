@@ -39,7 +39,7 @@ public class UserLoginDB {
             if(count == 0){
                 sql = "insert into " + TABLE_NAME_USER + " values ('"+email+"','"+pw+"',CURRENT_TIMESTAMP);";
                 statement = connection.createStatement();
-                statement.execute(sql);
+                statement.executeUpdate(sql);
                 
 //                if(returnBool != true){
 //                    System.out.println("Exiting createaccount method");
@@ -53,18 +53,24 @@ public class UserLoginDB {
                 System.out.println("Inserting into " + TABLE_NAME_USER_PERS_INFO + " values " + email+" " + firstName+" " + lastName);
                 sql = "insert into " + TABLE_NAME_USER_PERS_INFO + " values ('"+email+"','"+firstName+"','"+lastName+"');";
                 statement = connection.createStatement();
-                statement.execute(sql);
+                statement.executeUpdate(sql);
                 
                 returnBool = true;
             }
             connection.close();
         }
         catch(URISyntaxException e){
+            System.out.println("something went wrong creating account");
             e.getMessage();
-            e.printStackTrace();}
+            e.printStackTrace();
+            return false;
+        }
         catch(SQLException e){
+            System.out.println("something went wrong creating account");
             e.getMessage();
-            e.printStackTrace();}
+            e.printStackTrace();
+            return false;
+        }
         
         System.out.println("ReturnBool for createAccount = " + returnBool);
         return returnBool;
@@ -214,12 +220,18 @@ public class UserLoginDB {
     
     public boolean deleteUserFromTable(String email){
         String sql = "delete from " + TABLE_NAME_USER + " where user_email = '" + email + "';";
+        String sql2 = "delete from " + TABLE_NAME_USER_PERS_INFO + " where user_email = '" + email + "';";
         boolean ret = false;
         try{
             connection = getConnection();
             Statement stmt = connection.createStatement();
             stmt.executeUpdate(sql);
+            
+            Statement stmt2 = connection.createStatement();
+            stmt2.executeUpdate(sql2);
             ret = true;
+            
+            connection.close(); 
         }
         catch(URISyntaxException e){
             ret = false;
