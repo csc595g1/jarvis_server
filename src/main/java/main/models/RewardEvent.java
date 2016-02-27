@@ -1,10 +1,11 @@
 package main.models;
 
 import javax.xml.bind.annotation.XmlRootElement;
+//import javax.
 import java.util.Calendar;
 import java.util.TimeZone;
 
-@XmlRootElement
+@XmlRootElement(name="RewardEvent")
 public class RewardEvent {
 	
 	private String eventId;
