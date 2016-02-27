@@ -71,7 +71,7 @@ public class Rewards {
 	}
 
 	@GET
-	@Path("/events/")
+	@Path("/getevents/")
 	//@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRewardsById(@PathParam ("email")  String email) throws JSONException{
@@ -96,25 +96,25 @@ public class Rewards {
 		
 	}
 
-	@GET
-	@Path("/events")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRewards() {
-		JSONObject jsonResponse = new JSONObject();
-		
-		ArrayList<RewardEvent> ary = getRewards(null);
-		
-		try {
-			jsonResponse.put("rewardEvents", new JSONArray(ary));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block/events
-			e.printStackTrace();
-		}
-		
-		return Response.status(Response.Status.OK).entity(jsonResponse).build();
-		
-	}
+//	@GET
+//	@Path("/events")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response getRewards() {
+//		JSONObject jsonResponse = new JSONObject();
+//		
+//		ArrayList<RewardEvent> ary = getRewards(null);
+//		
+//		try {
+//			jsonResponse.put("rewardEvents", new JSONArray(ary));
+//		} catch (JSONException e) {
+//			// TODO Auto-generated catch block/events
+//			e.printStackTrace();
+//		}
+//		
+//		return Response.status(Response.Status.OK).entity(jsonResponse).build();
+//		
+//	}
 
 	@PUT
 	@Path("/event")
