@@ -1,5 +1,6 @@
 package main.services;
 
+import com.sun.jersey.api.json.JSONConfiguration;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -75,7 +76,7 @@ public class Rewards {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getRewardsById(@QueryParam("email") String email) throws JSONException{
 		JSONObject jsonResponse = new JSONObject();
-		
+		JSONArray jarray = new JSONArray();
 		ArrayList<RewardEvent> ary = null;
 		
 		if (email != null) {
@@ -83,14 +84,27 @@ public class Rewards {
 		}
 
 		try {
-			jsonResponse.put("rewardEvents", new JSONArray(ary));
-                        System.out.println(jsonResponse);
+                    for (RewardEvent r : ary){
+                        jsonResponse = new JSONObject();
+                        jsonResponse.put("eventId", r.getEventId());
+                        jsonResponse.put("eventCategory", r.getEventCategory());
+                        jsonResponse.put("title", r.getTitle());
+                        jsonResponse.put("units", r.getUnits());
+                        jarray.put(jsonResponse);
+                        //jarray.add(jsonResponse);
+                    }
+			//jsonResponse.put("rewardEvents", new JSONArray(ary));
+                        //System.out.println(jsonResponse);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block/events
 			e.printStackTrace();
                         return Response.status(Response.Status.NO_CONTENT).build();
 		}
-		
+		if(jarray.length() == 0){
+                    return Response.status(Response.Status.NO_CONTENT).build();
+                }
+                jsonResponse = new JSONObject();
+                jsonResponse.put("events", jarray);
 		return Response.status(Response.Status.OK).entity(jsonResponse).build();
 		
 	}
