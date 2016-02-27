@@ -71,10 +71,9 @@ public class Rewards {
 	}
 
 	@GET
-	@Path("/getevents/")
-	//@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/getevents")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRewardsById(@PathParam ("email")  String email) throws JSONException{
+	public Response getRewardsById(@QueryParam("email") String email) throws JSONException{
 		JSONObject jsonResponse = new JSONObject();
 		
 		ArrayList<RewardEvent> ary = null;
