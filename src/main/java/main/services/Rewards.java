@@ -85,6 +85,7 @@ public class Rewards {
 
 		try {
 			jsonResponse.put("rewardEvents", new JSONArray(ary));
+                        System.out.println(jsonResponse);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block/events
 			e.printStackTrace();
