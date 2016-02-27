@@ -71,16 +71,16 @@ public class Rewards {
 	}
 
 	@GET
-	@Path("/events/{userId}")
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/events/")
+	//@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getRewardsById(@PathParam ("userId")  String userId) throws JSONException{
+	public Response getRewardsById(@PathParam ("email")  String email) throws JSONException{
 		JSONObject jsonResponse = new JSONObject();
 		
-		ArrayList<String> ary = null;
+		ArrayList<RewardEvent> ary = null;
 		
-		if (userId != null) {
-			ary = getRewards(userId);
+		if (email != null) {
+			ary = getRewards(email);
 		}
 
 		try {
@@ -88,6 +88,7 @@ public class Rewards {
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block/events
 			e.printStackTrace();
+                        return Response.status(Response.Status.NO_CONTENT).build();
 		}
 		
 		return Response.status(Response.Status.OK).entity(jsonResponse).build();
@@ -101,7 +102,7 @@ public class Rewards {
 	public Response getRewards() {
 		JSONObject jsonResponse = new JSONObject();
 		
-		ArrayList<String> ary = getRewards(null);
+		ArrayList<RewardEvent> ary = getRewards(null);
 		
 		try {
 			jsonResponse.put("rewardEvents", new JSONArray(ary));
@@ -294,45 +295,51 @@ public class Rewards {
 		return isDeleted;
 	}
 	
-	private ArrayList<String> getRewards(String userId) {
+	private ArrayList<RewardEvent> getRewards(String userId) {
 		
-		ArrayList<String> ary = new ArrayList<String>();
-		
-		if (userId == null){
-			ary.add("Test1OneRewardEvent");
-			ary.add("Test1TwoRewardEvent");
-			ary.add("Test1ThreeRewardEvent");
-			ary.add("Test1FourRewardEvent");
-			
-			ary.add("Test2OneRewardEvent");
-			ary.add("Test2TwoRewardEvent");
-			ary.add("Test2ThreeRewardEvent");
-			ary.add("Test2FourRewardEvent");
-			
-			ary.add("Test3OneRewardEvent");
-			ary.add("Test3TwoRewardEvent");
-			ary.add("Test3ThreeRewardEvent");
-			ary.add("Test3FourRewardEvent");
-		} else if (userId.equalsIgnoreCase("test1@test.com")){
-			ary.add("Test1OneRewardEvent");
-			ary.add("Test1TwoRewardEvent");
-			ary.add("Test1ThreeRewardEvent");
-			ary.add("Test1FourRewardEvent");
-		} else if (userId.equalsIgnoreCase("test2@test.com")) {
-			ary.add("Test2OneRewardEvent");
-			ary.add("Test2TwoRewardEvent");
-			ary.add("Test2ThreeRewardEvent");
-			ary.add("Test2FourRewardEvent");
-		} else if (userId.equalsIgnoreCase("test3@test.com")) {
-			ary.add("Test3OneRewardEvent");
-			ary.add("Test3TwoRewardEvent");
-			ary.add("Test3ThreeRewardEvent");
-			ary.add("Test3FourRewardEvent");
-		} else {
-			ary.add("No events found");
-		}
-
-		return ary;
+            ArrayList<RewardEvent> events = null;
+            
+            events = new RewardEventDB().getRewardEventsByUserId(userId);
+            
+            return events;
+            
+//		ArrayList<String> ary = new ArrayList<String>();
+//		
+//		if (userId == null){
+//			ary.add("Test1OneRewardEvent");
+//			ary.add("Test1TwoRewardEvent");
+//			ary.add("Test1ThreeRewardEvent");
+//			ary.add("Test1FourRewardEvent");
+//			
+//			ary.add("Test2OneRewardEvent");
+//			ary.add("Test2TwoRewardEvent");
+//			ary.add("Test2ThreeRewardEvent");
+//			ary.add("Test2FourRewardEvent");
+//			
+//			ary.add("Test3OneRewardEvent");
+//			ary.add("Test3TwoRewardEvent");
+//			ary.add("Test3ThreeRewardEvent");
+//			ary.add("Test3FourRewardEvent");
+//		} else if (userId.equalsIgnoreCase("test1@test.com")){
+//			ary.add("Test1OneRewardEvent");
+//			ary.add("Test1TwoRewardEvent");
+//			ary.add("Test1ThreeRewardEvent");
+//			ary.add("Test1FourRewardEvent");
+//		} else if (userId.equalsIgnoreCase("test2@test.com")) {
+//			ary.add("Test2OneRewardEvent");
+//			ary.add("Test2TwoRewardEvent");
+//			ary.add("Test2ThreeRewardEvent");
+//			ary.add("Test2FourRewardEvent");
+//		} else if (userId.equalsIgnoreCase("test3@test.com")) {
+//			ary.add("Test3OneRewardEvent");
+//			ary.add("Test3TwoRewardEvent");
+//			ary.add("Test3ThreeRewardEvent");
+//			ary.add("Test3FourRewardEvent");
+//		} else {
+//			ary.add("No events found");
+//		}
+//
+//		return ary;
 		
 	}
 	
