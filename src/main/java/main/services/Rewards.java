@@ -90,6 +90,7 @@ public class Rewards {
                         jsonResponse.put("eventCategory", r.getEventCategory());
                         jsonResponse.put("title", r.getTitle());
                         jsonResponse.put("units", r.getUnits());
+                        jsonResponse.put("dttm",r.getTstamp());
                         jarray.put(jsonResponse);
                         //jarray.add(jsonResponse);
                     }
@@ -166,7 +167,7 @@ public class Rewards {
 		//boolean success = rewardEventDB.insertRewardEvent(createRewardEvent);
 		try {
 			if (success) {
-				jsonResponse.put("eventId", "00000");
+				jsonResponse.put("eventId", createRewardEvent.getEventId());
 				jsonResponse.put("userId", createRewardEvent.getUserId());
 				jsonResponse.put("eventCategory", createRewardEvent.getEventCategory());
 				jsonResponse.put("units", createRewardEvent.getUnits().toString());
