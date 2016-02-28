@@ -73,8 +73,8 @@ public class RewardCatalogDB {
             connection.close();
             isCreated = true;
         }
-            catch(URISyntaxException e){
-                System.out.println("caught URIexception");
+        catch(URISyntaxException e){
+            System.out.println("caught URIexception");
             e.getMessage();
             e.printStackTrace();
             return false;
@@ -83,9 +83,10 @@ public class RewardCatalogDB {
             System.out.println("caught sql exception");
             e.getMessage();
             e.printStackTrace();
-        return false;
+            return false;
         }
-        finally{connection.close();}
+        finally { connection.close(); }
+        
         return isCreated;
     }
     

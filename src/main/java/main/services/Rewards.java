@@ -25,6 +25,8 @@ import org.codehaus.jettison.json.JSONObject;
 
 import main.models.RewardEvent;
 import main.models.RewardEventDB;
+import main.models.RewardCatalog;
+import main.models.RewardCatalogDB;
 
 @Path("/rewards")
 public class Rewards {
@@ -250,8 +252,87 @@ public class Rewards {
 		return Response.status(Response.Status.OK).entity(jsonResponse).build();
 		
 	}
+	
+	@GET
+	@Path("/catalog")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCatalog() throws JSONException{
+        System.out.println("web request to get the catalog");
+        
+		JSONObject jsonResponse = new JSONObject();
+		
+		ArrayList<String> ary = getRewardEventTypes();
+		
+		try {
+			jsonResponse.put("catalog", new JSONArray(ary));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block/events
+			e.printStackTrace();
+		}
+		
+		return Response.status(Response.Status.OK).entity(jsonResponse).build();
+		
+	}
+
+	@GET
+	@Path("/loadcatalog")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response loadCatalog() throws JSONException{
+        System.out.println("web request to load the catalog");
+        
+		JSONObject jsonResponse = new JSONObject();
+		
+		Boolean isLoaded = loadCatalogTable();
+		
+		try {
+			if (isLoaded) {
+				jsonResponse.put("catalogLoaded", Boolean.TRUE.toString());
+			} else {
+				jsonResponse.put("catalogLoaded", Boolean.FALSE.toString());
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block/events
+			e.printStackTrace();
+		}
+		
+		return Response.status(Response.Status.OK).entity(jsonResponse).build();
+		
+	}
+
+	
 
 	/* Internal Database calls */
+	private Boolean loadCatalogTable() {
+		Boolean isLoaded = Boolean.FALSE;
+		
+		
+		return isLoaded;
+	}
+	
+	private ArrayList<RewardCatalog> createCatalogItem(RewardCatalog rewardCatalog) {
+		
+		ArrayList<RewardCatalog> ary = new ArrayList<RewardCatalog>();
+		
+		RewardCatalogDB rewardCatalogDB = new RewardCatalogDB();
+		try {
+			rewardCatalogDB.insertRewardCatalogItem(rewardCatalog);
+		} catch(SQLException e){
+            System.out.println("sql exception in service");
+            e.getMessage();
+            e.printStackTrace();
+        } finally {
+			rewardCatalogDB = null;        	
+        }
+		
+		ary.add(rewardCatalog);
+
+		return ary;
+		
+		
+	}
+	
 	private RewardEvent createRewardEvent(RewardEvent rewardEvent) {
 		Boolean isCreated = Boolean.FALSE;
 		RewardEvent createdRewardEvent = null;
