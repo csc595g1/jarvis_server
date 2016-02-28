@@ -341,6 +341,7 @@ public class Rewards {
 	/* Internal Database calls */
 	/***************************/
 	private Boolean loadCatalogTable() {
+        System.out.println("loadCatalogTable");
 		Boolean isLoaded = Boolean.FALSE;
 		
 		RewardCatalogDB rewardCatalogDB = new RewardCatalogDB();
@@ -363,7 +364,7 @@ public class Rewards {
 			String output;
 			System.out.println("Output from Server .... \n");
 			while ((output = br.readLine()) != null) {
-				System.out.println(output);
+				System.out.println("loadCatalogTable->Reading catalog from Tango...");
 			}
 
 			conn.disconnect();
