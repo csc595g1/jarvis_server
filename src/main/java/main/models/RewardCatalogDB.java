@@ -91,6 +91,8 @@ public class RewardCatalogDB {
     }
     
     public Boolean deleteCatalog() {
+        System.out.println("insertRewardCatalogItem called...");
+        boolean isDeleted = false;
 
         try{
 	        connection = getConnection();
@@ -99,17 +101,20 @@ public class RewardCatalogDB {
 	        Statement stmt = connection.createStatement();
 	        stmt.execute(sql);
 	        connection.close();
+	        isDeleted = Boolean.TRUE;
         }
-        catch(URISyntaxException e){
+        catch(URISyntaxException e) {
+        	isDeleted = Boolean.FALSE;
             e.getMessage();
             e.printStackTrace();
         }
-        catch(SQLException e){
+        catch(SQLException e) {
+        	isDeleted = Boolean.FALSE;
             e.getMessage();
             e.printStackTrace();
         }
 
-    	return Boolean.FALSE;
+    	return isDeleted;
     }
     
 ///////////////////////////////////////////////////////////////////////////////    
