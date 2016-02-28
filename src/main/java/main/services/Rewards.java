@@ -23,6 +23,13 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import main.models.RewardEvent;
 import main.models.RewardEventDB;
 import main.models.RewardCatalog;
@@ -253,6 +260,33 @@ public class Rewards {
 		
 	}
 	
+	@DELETE
+	@Path("/catalog")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteRewardCatalog() throws JSONException{
+		JSONObject jsonResponse = new JSONObject();
+		
+		Boolean flag = Boolean.FALSE;
+
+		try {
+			flag = this.deleteRewardCatalogDB();
+			
+			if (flag) {
+				jsonResponse.put("catalogDeleted", Boolean.TRUE.toString());
+			} else {
+				jsonResponse.put("catalogDeleted", Boolean.FALSE.toString());
+			}
+			
+		} catch (JSONException e) {
+			jsonResponse.put("error", e.getMessage());
+			return Response.status(Response.Status.BAD_REQUEST).entity(jsonResponse).build();
+		}
+		
+		return Response.status(Response.Status.OK).entity(jsonResponse).build();
+		
+	}
+
 	@GET
 	@Path("/catalog")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -303,13 +337,55 @@ public class Rewards {
 
 	
 
+	/***************************/
 	/* Internal Database calls */
+	/***************************/
 	private Boolean loadCatalogTable() {
 		Boolean isLoaded = Boolean.FALSE;
 		
 		RewardCatalogDB rewardCatalogDB = new RewardCatalogDB();
 		
+		try {
+			URL url = new URL("https://sandbox.tangocard.com/raas/v1.1/rewards");
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Accept", "application/json");
+			conn.setRequestProperty("Authorization", "Basic Q29ubmVjdGVkSG9tZVRlc3Q6OVp2a0F0THQyQmt6QUtYdHlidU1sTVh4QjJ3SVpMWmNWQXJIU0d3cTJXWEVoZldmTkNmc0VFaXlv");
+			
+			if (conn.getResponseCode() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "
+						+ conn.getResponseCode());
+			}
+
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+				(conn.getInputStream())));
+
+			String output;
+			System.out.println("Output from Server .... \n");
+			while ((output = br.readLine()) != null) {
+				System.out.println(output);
+			}
+
+			conn.disconnect();
+
+			
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		return isLoaded;
+	}
+	
+	private Boolean deleteRewardCatalogDB() {
+		Boolean isDeleted = Boolean.FALSE;
+		
+		RewardCatalogDB rewardCatalogDB = new RewardCatalogDB();
+		
+		isDeleted = rewardCatalogDB.deleteCatalog();
+		
+		return isDeleted;
 	}
 	
 	private ArrayList<RewardCatalog> createCatalogItem(RewardCatalog rewardCatalog) {

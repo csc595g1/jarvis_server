@@ -90,33 +90,53 @@ public class RewardCatalogDB {
         return isCreated;
     }
     
-    
+    public Boolean deleteCatalog() {
+
+        try{
+	        connection = getConnection();
+	        String sql = "DELETE FROM " + TABLE_REWARD_CATALOG ;
+	        
+	        Statement stmt = connection.createStatement();
+	        stmt.execute(sql);
+	        connection.close();
+        }
+        catch(URISyntaxException e){
+            e.getMessage();
+            e.printStackTrace();
+        }
+        catch(SQLException e){
+            e.getMessage();
+            e.printStackTrace();
+        }
+
+    	return Boolean.FALSE;
+    }
     
 ///////////////////////////////////////////////////////////////////////////////    
     //create if not exists
     private void createRewardCatalogTable(){
         
         try{
-        connection = getConnection();
-        String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_REWARD_CATALOG 
-                + "(eventId BIGSERIAL PRIMARY KEY,"
-                + "brand VARCHAR(250) NOT NULL,"
-                + "image_url VARCHAR(250) NOT NULL,"
-                + "type VARCHAR(250) NOT NULL,"
-                + "description VARCHAR(250) NOT NULL,"
-                + "sku VARCHAR(250) NOT NULL,"
-                + "is_variable VARCHAR(5) NULL,"
-                + "denomination integer NULL,"
-                + "min_price integer NULL,"
-                + "max_price integer NULL,"
-                + "currency_code VARCHAR(3) NOT NULL,"
-                + "available VARCHAR(5) NOT NULL,"
-                + "country_code VARCHAR(5) NOT NULL,"
-                + "tstamp timestamp);";
-        
-        Statement stmt = connection.createStatement();
-        stmt.execute(sql);
-        connection.close();
+	        connection = getConnection();
+	        String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_REWARD_CATALOG 
+	                + "(eventId BIGSERIAL PRIMARY KEY,"
+	                + "brand VARCHAR(250) NOT NULL,"
+	                + "image_url VARCHAR(250) NOT NULL,"
+	                + "type VARCHAR(250) NOT NULL,"
+	                + "description VARCHAR(250) NOT NULL,"
+	                + "sku VARCHAR(250) NOT NULL,"
+	                + "is_variable VARCHAR(5) NULL,"
+	                + "denomination integer NULL,"
+	                + "min_price integer NULL,"
+	                + "max_price integer NULL,"
+	                + "currency_code VARCHAR(3) NOT NULL,"
+	                + "available VARCHAR(5) NOT NULL,"
+	                + "country_code VARCHAR(5) NOT NULL,"
+	                + "tstamp timestamp);";
+	        
+	        Statement stmt = connection.createStatement();
+	        stmt.execute(sql);
+	        connection.close();
         }
         catch(URISyntaxException e){
             e.getMessage();
