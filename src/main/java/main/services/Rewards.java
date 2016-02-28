@@ -368,18 +368,6 @@ public class Rewards {
 //				System.out.println("loadCatalogTable->Reading catalog from Tango...");
 //			}
 
-			if (jsonRequest.has("userId") &&
-					jsonRequest.has("eventCategory") &&
-					jsonRequest.has("units") &&
-					jsonRequest.has("title")) {
-				createRewardEvent = new RewardEvent("",
-										jsonRequest.getString("userId"),
-										jsonRequest.getString("eventCategory"),
-										jsonRequest.getInt("units"),
-										jsonRequest.getString("title"),
-										"");
-
-			
 			
 			
 			String output;
