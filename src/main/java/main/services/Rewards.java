@@ -307,6 +307,7 @@ public class Rewards {
 	private Boolean loadCatalogTable() {
 		Boolean isLoaded = Boolean.FALSE;
 		
+		RewardCatalogDB rewardCatalogDB = new RewardCatalogDB();
 		
 		return isLoaded;
 	}
