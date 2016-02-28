@@ -368,11 +368,15 @@ public class Rewards {
 			}
 
 			conn.disconnect();
+			
+			isLoaded = Boolean.TRUE;
 
 			
 		} catch (MalformedURLException e) {
+			isLoaded = Boolean.FALSE;
 			e.printStackTrace();
 		} catch (IOException e) {
+			isLoaded = Boolean.FALSE;
 			e.printStackTrace();
 		}
 		
