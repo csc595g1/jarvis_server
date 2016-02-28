@@ -358,15 +358,46 @@ public class Rewards {
 						+ conn.getResponseCode());
 			}
 
+			
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 				(conn.getInputStream())));
 
+//			String output;
+//			System.out.println("Output from Server .... \n");
+//			while ((output = br.readLine()) != null) {
+//				System.out.println("loadCatalogTable->Reading catalog from Tango...");
+//			}
+
+			if (jsonRequest.has("userId") &&
+					jsonRequest.has("eventCategory") &&
+					jsonRequest.has("units") &&
+					jsonRequest.has("title")) {
+				createRewardEvent = new RewardEvent("",
+										jsonRequest.getString("userId"),
+										jsonRequest.getString("eventCategory"),
+										jsonRequest.getInt("units"),
+										jsonRequest.getString("title"),
+										"");
+
+			
+			
+			
 			String output;
+			StringBuilder jsonCatalog = new StringBuilder();
 			System.out.println("Output from Server .... \n");
 			while ((output = br.readLine()) != null) {
 				System.out.println("loadCatalogTable->Reading catalog from Tango...");
+				jsonCatalog.append(output);
 			}
 
+			JSONObject catalog = new JSONObject(jsonCatalog.toString());
+			
+			if (catalog.has("success") && catalog.getString("success") == "true") {
+				System.out.println("Output from Catalog is success == true .... \n");
+			} else {
+				System.out.println("Output from Catalog is success == false .... \n");
+			}
+			
 			conn.disconnect();
 			
 			isLoaded = Boolean.TRUE;
@@ -376,6 +407,9 @@ public class Rewards {
 			isLoaded = Boolean.FALSE;
 			e.printStackTrace();
 		} catch (IOException e) {
+			isLoaded = Boolean.FALSE;
+			e.printStackTrace();
+		} catch (JSONException e) {
 			isLoaded = Boolean.FALSE;
 			e.printStackTrace();
 		}
