@@ -20,7 +20,7 @@ public class RewardCatalogDB {
     }
     
     public boolean insertRewardCatalogItem(RewardCatalog catalog) throws SQLException{
-        System.out.println("insertRewardCatalogItem called...");
+        System.out.println("RewardCatalogDB->insertRewardCatalogItem");
         boolean isCreated = false;
         int count = 0;
         String sql;
@@ -91,7 +91,8 @@ public class RewardCatalogDB {
     }
     
     public Boolean deleteCatalog() {
-        System.out.println("insertRewardCatalogItem called...");
+        System.out.println("RewardCatalogDB->deleteCatalog");
+        
         boolean isDeleted = false;
 
         try{
@@ -118,6 +119,8 @@ public class RewardCatalogDB {
     }
     
     public ArrayList<RewardCatalog> getCatalogItems() {
+        System.out.println("RewardCatalogDB->getCatalogItems");
+        
         String catalogId = "";
         String brand = "";
         String image_url = "";
@@ -189,6 +192,7 @@ public class RewardCatalogDB {
 ///////////////////////////////////////////////////////////////////////////////    
     //create if not exists
     private void createRewardCatalogTable(){
+        System.out.println("RewardCatalogDB->createRewardCatalogTable");
         
         try{
 	        connection = getConnection();

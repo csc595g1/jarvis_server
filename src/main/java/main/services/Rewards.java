@@ -370,7 +370,7 @@ public class Rewards {
 	/* Internal Database calls */
 	/***************************/
 	private Boolean loadCatalogTable() {
-        System.out.println("loadCatalogTable");
+        System.out.println("Rewards->loadCatalogTable");
 		Boolean isLoaded = Boolean.FALSE;
 		
 		RewardCatalogDB rewardCatalogDB = new RewardCatalogDB();
@@ -435,6 +435,7 @@ public class Rewards {
 	}
 	
 	private Boolean deleteRewardCatalogDB() {
+        System.out.println("Rewards->deleteRewardCatalogDB");
 		Boolean isDeleted = Boolean.FALSE;
 		
 		RewardCatalogDB rewardCatalogDB = new RewardCatalogDB();
@@ -445,6 +446,7 @@ public class Rewards {
 	}
 	
 	private ArrayList<RewardCatalog> createCatalogItem(RewardCatalog rewardCatalog) {
+        System.out.println("Rewards->createCatalogItem");
 		
 		ArrayList<RewardCatalog> ary = new ArrayList<RewardCatalog>();
 		
@@ -467,9 +469,15 @@ public class Rewards {
 	}
 	
 	private ArrayList<RewardCatalog> getCatalogItemsDB() {
+        System.out.println("Rewards->getCatalogItemsDB");
 		
+		ArrayList<RewardCatalog> rewardCatalog = new ArrayList<RewardCatalog>();
 		
-		return new ArrayList<RewardCatalog>();
+		RewardCatalogDB rewardCatalogDB = new RewardCatalogDB();
+		
+		rewardCatalog = rewardCatalogDB.getCatalogItems();
+		
+		return rewardCatalog;
 	}
 	
 	private RewardEvent createRewardEvent(RewardEvent rewardEvent) {
