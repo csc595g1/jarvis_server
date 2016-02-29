@@ -117,6 +117,75 @@ public class RewardCatalogDB {
     	return isDeleted;
     }
     
+    public ArrayList<RewardCatalog> getCatalogItems() {
+        String catalogId = "";
+        String brand = "";
+        String image_url = "";
+        String type = "";
+        String description = "";
+        String sku = "";
+        Boolean is_variable = false;
+        
+        Integer denomination = 0;
+        Integer min_price = 0;
+        Integer max_price = 0;
+             
+        String currency_code = "";
+        Boolean available = false;
+        String country_code = "";
+        String tstamp = "";
+
+        ArrayList<RewardCatalog> rewardCatalog = new ArrayList<RewardCatalog>();
+               
+        String sql = "SELECT catalogId,brand,image_url,type,description,sku,is_variable,denomination,min_price,max_price,currency_code,available,country_code,tstamp FROM " 
+                    + TABLE_REWARD_CATALOG 
+                    + ";";
+        try{
+            connection = getConnection();
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+            	catalogId = rs.getString(1);
+            	brand = rs.getString(2);
+            	image_url = rs.getString(3);
+            	type = rs.getString(4);
+            	description = rs.getString(5);
+            	sku = rs.getString(6);
+            	is_variable = Boolean.valueOf(rs.getString(7));
+
+            	currency_code = rs.getString(11);
+            	available = Boolean.valueOf(rs.getString(12));
+            	country_code = rs.getString(13);
+            	tstamp = rs.getString(14);
+            	
+            	if (rs.getString(8) != null) {
+                	denomination = rs.getInt(8);
+            		min_price = 0;
+            		max_price = 0;
+            	} else {
+                	denomination = 0;
+            		min_price = rs.getInt(9);
+            		max_price = rs.getInt(10);
+            	}
+            	
+            	rewardCatalog.add(new RewardCatalog(catalogId,brand,image_url,type,description,sku,is_variable,denomination,min_price,max_price,currency_code,available,country_code,tstamp));
+            }
+
+            connection.close();
+            return rewardCatalog;
+        }
+        catch(URISyntaxException e){
+            e.getMessage();
+            e.printStackTrace();
+            return null;
+        }
+        catch(SQLException e){
+            e.getMessage();
+            e.printStackTrace();
+            return null;
+        }
+    	
+    }
 ///////////////////////////////////////////////////////////////////////////////    
     //create if not exists
     private void createRewardCatalogTable(){
@@ -124,19 +193,19 @@ public class RewardCatalogDB {
         try{
 	        connection = getConnection();
 	        String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_REWARD_CATALOG 
-	                + "(eventId BIGSERIAL PRIMARY KEY,"
+	                + "(catalogId BIGSERIAL PRIMARY KEY,"
 	                + "brand VARCHAR(250) NOT NULL,"
-	                + "image_url VARCHAR(250) NOT NULL,"
-	                + "type VARCHAR(250) NOT NULL,"
-	                + "description VARCHAR(250) NOT NULL,"
+	                + "image_url VARCHAR(250) NULL,"
+	                + "type VARCHAR(250) NULL,"
+	                + "description VARCHAR(250) NULL,"
 	                + "sku VARCHAR(250) NOT NULL,"
 	                + "is_variable VARCHAR(5) NULL,"
 	                + "denomination integer NULL,"
 	                + "min_price integer NULL,"
 	                + "max_price integer NULL,"
-	                + "currency_code VARCHAR(3) NOT NULL,"
-	                + "available VARCHAR(5) NOT NULL,"
-	                + "country_code VARCHAR(5) NOT NULL,"
+	                + "currency_code VARCHAR(3) NULL,"
+	                + "available VARCHAR(5) NULL,"
+	                + "country_code VARCHAR(5) NULL,"
 	                + "tstamp timestamp);";
 	        
 	        Statement stmt = connection.createStatement();
