@@ -56,6 +56,35 @@ public class RewardEventDB {
         }
     }
     
+    public int getTotalPointsForUser(String email) throws SQLException{
+        String sql = "select coalesce(sum(units),0) as points from "+TABLE_REWARD_EVENTS+" where userid = '"+email+"';";
+        int sum = 0;
+        
+        try{
+            connection = getConnection();
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+                sum = rs.getInt(0);
+            }
+        }
+        catch(URISyntaxException e){
+            e.getMessage();
+            e.printStackTrace();
+            return 0;
+        }
+        catch(SQLException e){
+            e.getMessage();
+            e.printStackTrace();
+            return 0;
+        }
+        finally{
+            connection.close();
+        }
+        
+        return sum;
+    }
+    
     public boolean insertRewardEvent(RewardEvent event) throws SQLException{
         System.out.println("insertrewardevent called...");
         boolean isCreated = false;

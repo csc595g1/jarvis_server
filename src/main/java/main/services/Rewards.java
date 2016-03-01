@@ -70,6 +70,27 @@ public class Rewards {
 		return Response.status(Response.Status.OK).entity(jsonResponse).build();
 		
 	}
+        
+        @GET
+        @Path("/totalpoints")
+        @Produces(MediaType.APPLICATION_JSON)
+        public Response getTotalPointsForUser(@QueryParam("email") String email) throws JSONException{
+            JSONObject obj = new JSONObject();
+            int sum = 0;
+            if(email != null){
+                try{
+                    sum = new RewardEventDB().getTotalPointsForUser(email);
+                }
+                catch(SQLException e){
+                    System.out.println(e.getMessage());
+                    e.printStackTrace();
+                    obj.put("sum", 0);
+                    return Response.status(Response.Status.OK).entity(obj).build();
+                }
+            }
+            obj.put("sum", 0);
+            return Response.status(Response.Status.OK).entity(obj).build();
+        }
 
 	@GET
 	@Path("/getevents")
