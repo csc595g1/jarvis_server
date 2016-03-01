@@ -65,7 +65,7 @@ public class RewardEventDB {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next()){
-                sum = rs.getInt(0);
+                sum = rs.getInt(1);
             }
         }
         catch(URISyntaxException e){
