@@ -23,8 +23,17 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import main.models.RewardEvent;
 import main.models.RewardEventDB;
+import main.models.RewardCatalog;
+import main.models.RewardCatalogDB;
 
 @Path("/rewards")
 public class Rewards {
@@ -271,8 +280,227 @@ public class Rewards {
 		return Response.status(Response.Status.OK).entity(jsonResponse).build();
 		
 	}
+	
+	@DELETE
+	@Path("/catalog")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteRewardCatalog() throws JSONException{
+		JSONObject jsonResponse = new JSONObject();
+		
+		Boolean flag = Boolean.FALSE;
 
+		try {
+			flag = this.deleteRewardCatalogDB();
+			
+			if (flag) {
+				jsonResponse.put("catalogDeleted", Boolean.TRUE.toString());
+			} else {
+				jsonResponse.put("catalogDeleted", Boolean.FALSE.toString());
+			}
+			
+		} catch (JSONException e) {
+			jsonResponse.put("error", e.getMessage());
+			return Response.status(Response.Status.BAD_REQUEST).entity(jsonResponse).build();
+		}
+		
+		return Response.status(Response.Status.OK).entity(jsonResponse).build();
+		
+	}
+
+	@GET
+	@Path("/catalog")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCatalog() throws JSONException{
+        System.out.println("web request to get the catalog");
+        
+		JSONObject jsonResponse = new JSONObject();
+		JSONArray jsonArray = new JSONArray();
+		
+		ArrayList<RewardCatalog> ary = getCatalogItemsDB();
+		
+		try {
+            for (RewardCatalog rewardCatalog : ary) {
+                jsonResponse = new JSONObject();
+                jsonResponse.put("catalogId", rewardCatalog.getCatalogId());
+                jsonResponse.put("brand", rewardCatalog.getBrand());
+                jsonResponse.put("image_url", rewardCatalog.getImage_url());
+                jsonResponse.put("type", rewardCatalog.getType());
+                jsonResponse.put("description", rewardCatalog.getDescription());
+                jsonResponse.put("sku", rewardCatalog.getSku());
+                jsonResponse.put("is_variable", rewardCatalog.getIs_variable());
+
+                jsonResponse.put("denomination", String.valueOf(rewardCatalog.getDenomination()));
+                jsonResponse.put("min_price", String.valueOf(rewardCatalog.getMin_price()));
+                jsonResponse.put("max_price", String.valueOf(rewardCatalog.getMax_price()));
+                
+                jsonResponse.put("currency_code", rewardCatalog.getCurrency_code());
+                jsonResponse.put("available", rewardCatalog.getAvailable());
+                jsonResponse.put("country_code", rewardCatalog.getCountry_code());
+                jsonResponse.put("dttm",rewardCatalog.getTstamp());
+                
+                jsonArray.put(jsonResponse);
+            }
+            //System.out.println(jsonResponse);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block/events
+			e.printStackTrace();
+            return Response.status(Response.Status.NO_CONTENT).build();
+		}
+		if (jsonArray.length() == 0) {
+            return Response.status(Response.Status.NO_CONTENT).build();
+        }
+		
+        jsonResponse = new JSONObject();
+        jsonResponse.put("catalogItems", jsonArray);
+		
+        return Response.status(Response.Status.OK).entity(jsonResponse).build();
+		
+	}
+
+	@GET
+	@Path("/loadcatalog")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response loadCatalog() throws JSONException{
+        System.out.println("web request to load the catalog");
+        
+		JSONObject jsonResponse = new JSONObject();
+		
+		Boolean isLoaded = loadCatalogTable();
+		
+		try {
+			if (isLoaded) {
+				jsonResponse.put("catalogLoaded", Boolean.TRUE.toString());
+			} else {
+				jsonResponse.put("catalogLoaded", Boolean.FALSE.toString());
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block/events
+			e.printStackTrace();
+		}
+		
+		return Response.status(Response.Status.OK).entity(jsonResponse).build();
+		
+	}
+
+	
+
+	/***************************/
 	/* Internal Database calls */
+	/***************************/
+	private Boolean loadCatalogTable() {
+        System.out.println("Rewards->loadCatalogTable");
+		Boolean isLoaded = Boolean.FALSE;
+		
+		RewardCatalogDB rewardCatalogDB = new RewardCatalogDB();
+		
+		try {
+			URL url = new URL("https://sandbox.tangocard.com/raas/v1.1/rewards");
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Accept", "application/json");
+			conn.setRequestProperty("Authorization", "Basic Q29ubmVjdGVkSG9tZVRlc3Q6OVp2a0F0THQyQmt6QUtYdHlidU1sTVh4QjJ3SVpMWmNWQXJIU0d3cTJXWEVoZldmTkNmc0VFaXlv");
+			
+			if (conn.getResponseCode() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "
+						+ conn.getResponseCode());
+			}
+
+			
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+				(conn.getInputStream())));
+
+//			String output;
+//			System.out.println("Output from Server .... \n");
+//			while ((output = br.readLine()) != null) {
+//				System.out.println("loadCatalogTable->Reading catalog from Tango...");
+//			}
+
+			
+			
+			String output;
+			StringBuilder jsonCatalog = new StringBuilder();
+			System.out.println("Output from Server .... \n");
+			while ((output = br.readLine()) != null) {
+				System.out.println("loadCatalogTable->Reading catalog from Tango...");
+				jsonCatalog.append(output);
+			}
+
+			JSONObject catalog = new JSONObject(jsonCatalog.toString());
+			
+			if (catalog.has("success") && catalog.getString("success") == "true") {
+				System.out.println("Output from Catalog is success == true .... \n");
+			} else {
+				System.out.println("Output from Catalog is success == false .... \n");
+			}
+			
+			conn.disconnect();
+			
+			isLoaded = Boolean.TRUE;
+
+			
+		} catch (MalformedURLException e) {
+			isLoaded = Boolean.FALSE;
+			e.printStackTrace();
+		} catch (IOException e) {
+			isLoaded = Boolean.FALSE;
+			e.printStackTrace();
+		} catch (JSONException e) {
+			isLoaded = Boolean.FALSE;
+			e.printStackTrace();
+		}
+		
+		return isLoaded;
+	}
+	
+	private Boolean deleteRewardCatalogDB() {
+        System.out.println("Rewards->deleteRewardCatalogDB");
+		Boolean isDeleted = Boolean.FALSE;
+		
+		RewardCatalogDB rewardCatalogDB = new RewardCatalogDB();
+		
+		isDeleted = rewardCatalogDB.deleteCatalog();
+		
+		return isDeleted;
+	}
+	
+	private ArrayList<RewardCatalog> createCatalogItem(RewardCatalog rewardCatalog) {
+        System.out.println("Rewards->createCatalogItem");
+		
+		ArrayList<RewardCatalog> ary = new ArrayList<RewardCatalog>();
+		
+		RewardCatalogDB rewardCatalogDB = new RewardCatalogDB();
+		try {
+			rewardCatalogDB.insertRewardCatalogItem(rewardCatalog);
+		} catch(SQLException e){
+            System.out.println("sql exception in service");
+            e.getMessage();
+            e.printStackTrace();
+        } finally {
+			rewardCatalogDB = null;        	
+        }
+		
+		ary.add(rewardCatalog);
+
+		return ary;
+		
+		
+	}
+	
+	private ArrayList<RewardCatalog> getCatalogItemsDB() {
+        System.out.println("Rewards->getCatalogItemsDB");
+		
+		ArrayList<RewardCatalog> rewardCatalog = new ArrayList<RewardCatalog>();
+		
+		RewardCatalogDB rewardCatalogDB = new RewardCatalogDB();
+		
+		rewardCatalog = rewardCatalogDB.getCatalogItems();
+		
+		return rewardCatalog;
+	}
+	
 	private RewardEvent createRewardEvent(RewardEvent rewardEvent) {
 		Boolean isCreated = Boolean.FALSE;
 		RewardEvent createdRewardEvent = null;
