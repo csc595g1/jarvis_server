@@ -67,6 +67,7 @@ public class RewardEventDB {
             while(rs.next()){
                 sum = rs.getInt("points");
                 System.out.println("sum = " + sum);
+                return sum;
             }
         }
         catch(URISyntaxException e){
