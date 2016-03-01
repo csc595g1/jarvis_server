@@ -362,6 +362,57 @@ public class Rewards {
 	}
 
 	@GET
+	@Path("/catalog{rewardType}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCatalogByType(@PathParam ("rewardType")  String rewardType) throws JSONException{
+        System.out.println("web request to get the catalog");
+        
+		JSONObject jsonResponse = new JSONObject();
+		JSONArray jsonArray = new JSONArray();
+		
+		ArrayList<RewardCatalog> ary = getCatalogItemsByTypeDB(rewardType);
+		
+		try {
+            for (RewardCatalog rewardCatalog : ary) {
+                jsonResponse = new JSONObject();
+                jsonResponse.put("catalogId", rewardCatalog.getCatalogId());
+                jsonResponse.put("brand", rewardCatalog.getBrand());
+                jsonResponse.put("image_url", rewardCatalog.getImage_url());
+                jsonResponse.put("type", rewardCatalog.getType());
+                jsonResponse.put("description", rewardCatalog.getDescription());
+                jsonResponse.put("sku", rewardCatalog.getSku());
+                jsonResponse.put("is_variable", rewardCatalog.getIs_variable());
+
+                jsonResponse.put("denomination", String.valueOf(rewardCatalog.getDenomination()));
+                jsonResponse.put("min_price", String.valueOf(rewardCatalog.getMin_price()));
+                jsonResponse.put("max_price", String.valueOf(rewardCatalog.getMax_price()));
+                
+                jsonResponse.put("currency_code", rewardCatalog.getCurrency_code());
+                jsonResponse.put("available", rewardCatalog.getAvailable());
+                jsonResponse.put("country_code", rewardCatalog.getCountry_code());
+                jsonResponse.put("dttm",rewardCatalog.getTstamp());
+                
+                jsonArray.put(jsonResponse);
+            }
+            //System.out.println(jsonResponse);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block/events
+			e.printStackTrace();
+            return Response.status(Response.Status.NO_CONTENT).build();
+		}
+		if (jsonArray.length() == 0) {
+            return Response.status(Response.Status.NO_CONTENT).build();
+        }
+		
+        jsonResponse = new JSONObject();
+        jsonResponse.put("catalogItems", jsonArray);
+		
+        return Response.status(Response.Status.OK).entity(jsonResponse).build();
+		
+	}
+
+	@GET
 	@Path("/loadcatalog")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -414,13 +465,6 @@ public class Rewards {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 				(conn.getInputStream())));
 
-//			String output;
-//			System.out.println("Output from Server .... \n");
-//			while ((output = br.readLine()) != null) {
-//				System.out.println("loadCatalogTable->Reading catalog from Tango...");
-//			}
-
-			
 			
 			String output;
 			StringBuilder jsonCatalog = new StringBuilder();
@@ -499,6 +543,18 @@ public class Rewards {
 		RewardCatalogDB rewardCatalogDB = new RewardCatalogDB();
 		
 		rewardCatalog = rewardCatalogDB.getCatalogItems();
+		
+		return rewardCatalog;
+	}
+	
+	private ArrayList<RewardCatalog> getCatalogItemsByTypeDB(String rewardType) {
+        System.out.println("Rewards->getCatalogItemsByTypeDB");
+		
+		ArrayList<RewardCatalog> rewardCatalog = new ArrayList<RewardCatalog>();
+		
+		RewardCatalogDB rewardCatalogDB = new RewardCatalogDB();
+		
+		rewardCatalog = rewardCatalogDB.getCatalogItemsByType(rewardType);
 		
 		return rewardCatalog;
 	}
