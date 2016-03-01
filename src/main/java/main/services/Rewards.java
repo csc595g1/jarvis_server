@@ -89,6 +89,8 @@ public class Rewards {
             if(email != null){
                 try{
                     sum = new RewardEventDB().getTotalPointsForUser(email);
+                    obj.put("sum", sum);
+                    return Response.status(Response.Status.OK).entity(obj).build();
                 }
                 catch(SQLException e){
                     System.out.println(e.getMessage());
