@@ -500,7 +500,7 @@ public class Rewards {
 			System.out.println("ERROR: "+ requestJson.toString());
 			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(conn.getOutputStream());
 			outputStreamWriter.write(requestJson.toString());
-			outputStreamWriter.flush();
+			//outputStreamWriter.flush();
 			outputStreamWriter.close();
 //			System.out.println("ERROR: "+ requestJson.toString());
 			
