@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -491,7 +492,7 @@ public class Rewards {
 
 		try {
 			URL url = new URL("https://sandbox.tangocard.com/raas/v1.1/orders");
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
 			conn.setDoOutput(true);
 			conn.setRequestMethod("POST");
 			conn.setRequestProperty("Content-Type", "application/json");
