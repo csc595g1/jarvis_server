@@ -27,6 +27,7 @@ import org.codehaus.jettison.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -490,9 +491,16 @@ public class Rewards {
 		try {
 			URL url = new URL("https://sandbox.tangocard.com/raas/v1.1/orders");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setDoOutput(true);
 			conn.setRequestMethod("POST");
-			conn.setRequestProperty("Accept", "application/json");
+			conn.setRequestProperty("Content-Type", "application/json");
 			conn.setRequestProperty("Authorization", "Basic Q29ubmVjdGVkSG9tZVRlc3Q6OVp2a0F0THQyQmt6QUtYdHlidU1sTVh4QjJ3SVpMWmNWQXJIU0d3cTJXWEVoZldmTkNmc0VFaXlv");
+			
+			OutputStream outputStream = conn.getOutputStream();
+			outputStream.write(requestJson.getBytes());
+			outputStream.flush();
+			
+			
 			
 			if (conn.getResponseCode() != 200) {
 				throw new RuntimeException("Failed : HTTP error code : "
