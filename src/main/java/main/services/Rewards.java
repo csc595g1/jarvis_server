@@ -481,8 +481,9 @@ public class Rewards {
         System.out.println("Rewards->placeRewardOrder");
         Boolean success = Boolean.FALSE;
 
+        JSONObject jsonRequest = new JSONObject();;
         try {
-			JSONObject jsonRequest = new JSONObject(requestJson);
+			jsonRequest = new JSONObject(requestJson);
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
@@ -498,7 +499,7 @@ public class Rewards {
 			conn.setRequestProperty("Content-Type", "application/json");
 			conn.setRequestProperty("Authorization", "Basic Q29ubmVjdGVkSG9tZVRlc3Q6OVp2a0F0THQyQmt6QUtYdHlidU1sTVh4QjJ3SVpMWmNWQXJIU0d3cTJXWEVoZldmTkNmc0VFaXlv");
 			
-			System.out.println("ERROR: "+ requestJson.toString());
+			System.out.println("ERROR: "+ jsonRequest.toString());
 			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(conn.getOutputStream());
 			outputStreamWriter.write(requestJson.toString());
 			//outputStreamWriter.flush();
@@ -507,12 +508,12 @@ public class Rewards {
 			
 			
 			
-//			if (conn.getResponseCode() != 200) {
-//				throw new RuntimeException("Failed : HTTP error code : "
-//						+ conn.getResponseCode());
-//			}
+			if (conn.getResponseCode() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "
+						+ conn.getResponseCode());
+			}
 
-			conn.getResponseCode() ;
+//			conn.getResponseCode() ;
 
 			
 			BufferedReader br = new BufferedReader(new InputStreamReader(
