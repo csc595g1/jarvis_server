@@ -493,7 +493,7 @@ public class Rewards {
 
 		try {
 			URL url = new URL("https://sandbox.tangocard.com/raas/v1.1/orders");
-			HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
 			conn.setRequestMethod("POST");
 			conn.setRequestProperty("Content-Type", "application/json");
