@@ -506,10 +506,12 @@ public class Rewards {
 			
 			
 			
-			if (conn.getResponseCode() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "
-						+ conn.getResponseCode());
-			}
+//			if (conn.getResponseCode() != 200) {
+//				throw new RuntimeException("Failed : HTTP error code : "
+//						+ conn.getResponseCode());
+//			}
+
+			conn.getResponseCode() ;
 
 			
 			BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -544,6 +546,9 @@ public class Rewards {
 			success = Boolean.FALSE;
 			e.printStackTrace();
 		} catch (JSONException e) {
+			success = Boolean.FALSE;
+			e.printStackTrace();
+		} catch (Exception e) {
 			success = Boolean.FALSE;
 			e.printStackTrace();
 		}
