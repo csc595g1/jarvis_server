@@ -497,6 +497,7 @@ public class Rewards {
 			conn.setDoOutput(true);
 			conn.setRequestMethod("POST");
 			conn.setRequestProperty("Content-Type", "application/json");
+			conn.setRequestProperty("Accept", "*/*");
 			conn.setRequestProperty("Authorization", "Basic Q29ubmVjdGVkSG9tZVRlc3Q6OVp2a0F0THQyQmt6QUtYdHlidU1sTVh4QjJ3SVpMWmNWQXJIU0d3cTJXWEVoZldmTkNmc0VFaXlv");
 			
 			System.out.println("ERROR: "+ jsonRequest.toString());
