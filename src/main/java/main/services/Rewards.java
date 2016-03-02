@@ -28,6 +28,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -496,10 +497,10 @@ public class Rewards {
 			conn.setRequestProperty("Content-Type", "application/json");
 			conn.setRequestProperty("Authorization", "Basic Q29ubmVjdGVkSG9tZVRlc3Q6OVp2a0F0THQyQmt6QUtYdHlidU1sTVh4QjJ3SVpMWmNWQXJIU0d3cTJXWEVoZldmTkNmc0VFaXlv");
 			
-			System.out.println("ERROR: "+ requestJson.toString());
-			OutputStream outputStream = conn.getOutputStream();
-			outputStream.write(requestJson.getBytes());
-			outputStream.flush();
+			//System.out.println("ERROR: "+ requestJson.toString());
+			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(conn.getOutputStream());
+			outputStreamWriter.write(requestJson.toString());
+			outputStreamWriter.close();
 			
 			
 			
