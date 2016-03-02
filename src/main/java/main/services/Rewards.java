@@ -11,6 +11,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -438,11 +439,107 @@ public class Rewards {
 		
 	}
 
+	@POST
+	@Path("/order")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response createRewardOrder(String requestJson) throws JSONException{
+        System.out.println("web request to create a reward order");
+
+        Boolean success = Boolean.FALSE;
+        
+		JSONObject jsonResponse = new JSONObject();
+		
+		jsonResponse = placeRewardOrder(requestJson);
+
+		try {
+			if (jsonResponse.has("success")) {
+				success = Boolean.valueOf(jsonResponse.get("success").toString());
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block/events
+			e.printStackTrace();
+		}
+		
+        if (success) {
+        	return Response.status(Response.Status.OK).entity(jsonResponse).build();
+        } else {
+        	return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+		
+	}
+
 	
 
 	/***************************/
 	/* Internal Database calls */
 	/***************************/
+	private JSONObject placeRewardOrder(String requestJson) {
+        System.out.println("Rewards->placeRewardOrder");
+        Boolean success = Boolean.FALSE;
+
+        try {
+			JSONObject jsonRequest = new JSONObject(requestJson);
+		} catch (JSONException e1) {
+			e1.printStackTrace();
+		}
+
+        
+        JSONObject jsonResponse = new JSONObject();
+
+		try {
+			URL url = new URL("https://sandbox.tangocard.com/raas/v1.1/orders");
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Accept", "application/json");
+			conn.setRequestProperty("Authorization", "Basic Q29ubmVjdGVkSG9tZVRlc3Q6OVp2a0F0THQyQmt6QUtYdHlidU1sTVh4QjJ3SVpMWmNWQXJIU0d3cTJXWEVoZldmTkNmc0VFaXlv");
+			
+			if (conn.getResponseCode() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "
+						+ conn.getResponseCode());
+			}
+
+			
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+				(conn.getInputStream())));
+
+			
+			String output;
+			StringBuilder jsonOrder = new StringBuilder();
+			System.out.println("Output from Server .... \n");
+			while ((output = br.readLine()) != null) {
+				System.out.println("placeRewardOrder->Placing an order from Tango...");
+				jsonOrder.append(output);
+			}
+
+			JSONObject order = new JSONObject(jsonOrder.toString());
+			
+			if (order.has("success") && order.getString("success") == "true") {
+				System.out.println("Output from Order is success == true .... \n");
+			} else {
+				System.out.println("Output from Order is success == false .... \n");
+			}
+			
+			conn.disconnect();
+			
+			success = Boolean.TRUE;
+
+			
+		} catch (MalformedURLException e) {
+			success = Boolean.FALSE;
+			e.printStackTrace();
+		} catch (IOException e) {
+			success = Boolean.FALSE;
+			e.printStackTrace();
+		} catch (JSONException e) {
+			success = Boolean.FALSE;
+			e.printStackTrace();
+		}
+		
+        return jsonResponse;
+        
+	}
+	
 	private Boolean loadCatalogTable() {
         System.out.println("Rewards->loadCatalogTable");
 		Boolean isLoaded = Boolean.FALSE;
