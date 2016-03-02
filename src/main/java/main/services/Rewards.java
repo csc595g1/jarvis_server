@@ -496,6 +496,7 @@ public class Rewards {
 			conn.setRequestProperty("Content-Type", "application/json");
 			conn.setRequestProperty("Authorization", "Basic Q29ubmVjdGVkSG9tZVRlc3Q6OVp2a0F0THQyQmt6QUtYdHlidU1sTVh4QjJ3SVpMWmNWQXJIU0d3cTJXWEVoZldmTkNmc0VFaXlv");
 			
+			System.out.println("ERROR: "+ requestJson.getBytes());
 			OutputStream outputStream = conn.getOutputStream();
 			outputStream.write(requestJson.getBytes());
 			outputStream.flush();
