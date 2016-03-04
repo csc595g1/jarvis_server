@@ -529,7 +529,8 @@ public class Rewards {
 			}
 
 			JSONObject order = new JSONObject(jsonOrder.toString());
-			
+			System.out.println("Order response: "+ order.toString());
+
 			if (order.has("success") && order.getString("success") == "true") {
 				System.out.println("Output from Order is success == true .... \n");
 			} else {
