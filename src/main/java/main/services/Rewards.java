@@ -493,28 +493,27 @@ public class Rewards {
 
 		try {
 			URL url = new URL("https://sandbox.tangocard.com/raas/v1.1/orders");
+
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
 			conn.setRequestMethod("POST");
 			conn.setRequestProperty("Content-Type", "application/json");
-			conn.setRequestProperty("Accept", "*/*");
 			conn.setRequestProperty("Authorization", "Basic Q29ubmVjdGVkSG9tZVRlc3Q6OVp2a0F0THQyQmt6QUtYdHlidU1sTVh4QjJ3SVpMWmNWQXJIU0d3cTJXWEVoZldmTkNmc0VFaXlv");
 			
-			System.out.println("ERROR: "+ jsonRequest.toString());
+//			System.out.println("ERROR: "+ jsonRequest.toString());
+
 			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(conn.getOutputStream());
 			outputStreamWriter.write(jsonRequest.toString());
 			outputStreamWriter.flush();
 			outputStreamWriter.close();
+
 //			System.out.println("ERROR: "+ requestJson.toString());
 			
 			
-			
-			if (conn.getResponseCode() != 200) {
+			if (conn.getResponseCode() != 201) {
 				throw new RuntimeException("Failed : HTTP error code : "
 						+ conn.getResponseCode());
 			}
-
-//			conn.getResponseCode() ;
 
 			
 			BufferedReader br = new BufferedReader(new InputStreamReader(
