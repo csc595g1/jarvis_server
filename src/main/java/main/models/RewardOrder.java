@@ -115,17 +115,15 @@ public class RewardOrder {
     public String toString() {
     	
         JSONObject jsonResponse = new JSONObject();
-        JSONObject jsonRecipient = new JSONObject();
-        JSONArray jsonRecipientInfo = new JSONArray();
+        JSONObject jsonRecipientInfo = new JSONObject();
 
         try {
             jsonResponse.put("customer", this.customer);
             jsonResponse.put("account_identifier", this.account_identifier);
             jsonResponse.put("campaign", this.campaign);
 
-            jsonRecipient.put("name", this.recipient_name);
-            jsonRecipient.put("email", this.recipient_email);
-            jsonRecipientInfo.put(jsonRecipient);
+            jsonRecipientInfo.put("name", this.recipient_name);
+            jsonRecipientInfo.put("email", this.recipient_email);
             jsonResponse.put("recipient",jsonRecipientInfo);
 
             jsonResponse.put("sku", this.sku);
@@ -148,8 +146,7 @@ public class RewardOrder {
     public JSONObject toJSON() {
 
         JSONObject jsonResponse = new JSONObject();
-        JSONObject jsonRecipient = new JSONObject();
-        JSONArray jsonRecipientInfo = new JSONArray();
+        JSONObject jsonRecipientInfo = new JSONObject();
 
 
         //Should look like this, though many items are optional
@@ -176,9 +173,8 @@ public class RewardOrder {
             jsonResponse.put("account_identifier", this.account_identifier);
             jsonResponse.put("campaign", this.campaign);
 
-            jsonRecipient.put("name", this.recipient_name);
-            jsonRecipient.put("email", this.recipient_email);
-            jsonRecipientInfo.put(jsonRecipient);
+            jsonRecipientInfo.put("name", this.recipient_name);
+            jsonRecipientInfo.put("email", this.recipient_email);
             jsonResponse.put("recipient",jsonRecipientInfo);
 
             jsonResponse.put("sku", this.sku);
