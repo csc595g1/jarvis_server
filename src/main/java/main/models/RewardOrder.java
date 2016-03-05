@@ -128,7 +128,7 @@ public class RewardOrder {
 
             jsonResponse.put("sku", this.sku);
 
-            jsonResponse.put("amount", Integer.toString(this.amount.intValue()));
+            jsonResponse.put("amount", this.amount.intValue());
 
             jsonResponse.put("reward_from", this.reward_from);
             jsonResponse.put("reward_subject", this.reward_subject);
@@ -179,7 +179,7 @@ public class RewardOrder {
 
             jsonResponse.put("sku", this.sku);
 
-            jsonResponse.put("amount", Integer.toString(this.amount.intValue()));
+            jsonResponse.put("amount", this.amount.intValue());
 
             jsonResponse.put("reward_from", this.reward_from);
             jsonResponse.put("reward_subject", this.reward_subject);
