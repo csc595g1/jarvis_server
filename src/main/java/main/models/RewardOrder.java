@@ -87,8 +87,7 @@ public class RewardOrder {
     	this.campaign = "HomeSafety";
     
 		try {
-			JSONArray jsonRecipientInfo = jsonOrder.getJSONArray("recipient");
-	    	jsonRecipient = jsonRecipientInfo.getJSONObject(0);
+	    	jsonRecipient = jsonOrder.getJSONObject("recipient");
 	    	this.recipient_name = jsonRecipient.getString("name");
 	    	this.recipient_email = jsonRecipient.getString("email");
 	
