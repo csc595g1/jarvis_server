@@ -502,17 +502,20 @@ public class Rewards {
 			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(conn.getOutputStream());
 			outputStreamWriter.write(jsonRequest.toString());
 			outputStreamWriter.flush();
-			outputStreamWriter.close();
+
+			conn.getInputStream().close();
 
 //			System.out.println("ERROR: "+ requestJson.toString());
 			
 			
+			System.out.println("Rewards->placeRewardOrder->getting response code");
 			if (conn.getResponseCode() != 201) {
 				throw new RuntimeException("Failed : HTTP error code : "
 						+ conn.getResponseCode());
 			}
 
 			
+			System.out.println("Rewards->placeRewardOrder->getting BufferedReader");
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 				(conn.getInputStream())));
 
@@ -525,6 +528,7 @@ public class Rewards {
 				stringOrder.append(output);
 			}
 
+			System.out.println("Rewards->placeRewardOrder->creating jsonOrder");
 			JSONObject jsonOrder = new JSONObject(stringOrder.toString());
 //			System.out.println("Order response: "+ jsonOrder.toString());
 
@@ -536,6 +540,7 @@ public class Rewards {
 			
 			conn.disconnect();
 			
+			System.out.println("Rewards->placeRewardOrder->setting jsonResponse");
 	        jsonResponse = jsonOrder;
 			
 		} catch (MalformedURLException e) {
