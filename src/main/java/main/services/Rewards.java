@@ -478,13 +478,13 @@ public class Rewards {
 	/***************************/
 	/* Internal Database calls */
 	/***************************/
-	private JSONObject placeRewardOrder(String requestJson) {
+	private JSONObject placeRewardOrder(String stringRequest) {
         System.out.println("Rewards->placeRewardOrder");
 
         JSONObject jsonResponse = new JSONObject();
         JSONObject jsonRequest = new JSONObject();;
         try {
-			jsonRequest = new JSONObject(requestJson);
+			jsonRequest = new JSONObject(stringRequest);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

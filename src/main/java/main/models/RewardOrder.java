@@ -90,7 +90,6 @@ public class RewardOrder {
 			JSONArray jsonRecipientInfo = jsonOrder.getJSONArray("recipient");
 	    	jsonRecipient = jsonRecipientInfo.getJSONObject(0);
 	    	this.recipient_name = jsonRecipient.getString("name");
-	    	jsonRecipient = jsonRecipientInfo.getJSONObject(1);
 	    	this.recipient_email = jsonRecipient.getString("email");
 	
 	    	this.sku = jsonOrder.getString("sku");
