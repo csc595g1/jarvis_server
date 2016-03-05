@@ -114,33 +114,34 @@ public class RewardOrder {
 
     public String toString() {
     	
-        JSONObject jsonResponse = new JSONObject();
-        JSONObject jsonRecipientInfo = new JSONObject();
-
-        try {
-            jsonResponse.put("customer", this.customer);
-            jsonResponse.put("account_identifier", this.account_identifier);
-            jsonResponse.put("campaign", this.campaign);
-
-            jsonRecipientInfo.put("name", this.recipient_name);
-            jsonRecipientInfo.put("email", this.recipient_email);
-            jsonResponse.put("recipient",jsonRecipientInfo);
-
-            jsonResponse.put("sku", this.sku);
-
-            jsonResponse.put("amount", this.amount.intValue());
-
-            jsonResponse.put("reward_from", this.reward_from);
-            jsonResponse.put("reward_subject", this.reward_subject);
-            jsonResponse.put("reward_message", this.reward_message);
-            jsonResponse.put("send_reward", this.send_reward);
-            jsonResponse.put("external_id", this.external_id);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return jsonResponse.toString();
+//        JSONObject jsonResponse = new JSONObject();
+//        JSONObject jsonRecipientInfo = new JSONObject();
+//
+//        try {
+//            jsonResponse.put("customer", this.customer);
+//            jsonResponse.put("account_identifier", this.account_identifier);
+//            jsonResponse.put("campaign", this.campaign);
+//
+//            jsonRecipientInfo.put("name", this.recipient_name);
+//            jsonRecipientInfo.put("email", this.recipient_email);
+//            jsonResponse.put("recipient",jsonRecipientInfo);
+//
+//            jsonResponse.put("sku", this.sku);
+//
+//            jsonResponse.put("amount", this.amount.intValue());
+//
+//            jsonResponse.put("reward_from", this.reward_from);
+//            jsonResponse.put("reward_subject", this.reward_subject);
+//            jsonResponse.put("reward_message", this.reward_message);
+//            jsonResponse.put("send_reward", this.send_reward);
+//            jsonResponse.put("external_id", this.external_id);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return jsonResponse.toString();
     	
+    	return this.toJSON().toString();
     }
     
     public JSONObject toJSON() {
