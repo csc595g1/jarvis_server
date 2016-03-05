@@ -456,7 +456,7 @@ public class Rewards {
 		jsonResponse = placeRewardOrder(requestJson);
 
 		try {
-			if (jsonResponse.has("success")) {
+			if (jsonResponse.has("success") && jsonResponse.getString("success") == "true") {
 				success = Boolean.valueOf(jsonResponse.get("success").toString());
 			}
 		} catch (JSONException e) {
@@ -503,44 +503,42 @@ public class Rewards {
 			outputStreamWriter.write(jsonRequest.toString());
 			outputStreamWriter.flush();
 
-//			conn.getInputStream().close();
-
 //			System.out.println("ERROR: "+ requestJson.toString());
 			
-			
-			System.out.println("Rewards->placeRewardOrder->getting response code");
+//			System.out.println("Rewards->placeRewardOrder->getting response code");
 			if (conn.getResponseCode() != 201) {
 				throw new RuntimeException("Failed : HTTP error code : "
 						+ conn.getResponseCode());
 			}
 
-			
-			System.out.println("Rewards->placeRewardOrder->getting BufferedReader");
+//			System.out.println("Rewards->placeRewardOrder->getting BufferedReader");
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 				(conn.getInputStream())));
 
-			
 			String output;
 			StringBuilder stringOrder = new StringBuilder();
-			System.out.println("Output from Server .... \n");
+//			System.out.println("Output from Server .... \n");
 			while ((output = br.readLine()) != null) {
-				System.out.println("placeRewardOrder->Placing an order from Tango...");
+//				System.out.println("placeRewardOrder->Placing an order from Tango...");
 				stringOrder.append(output);
 			}
 
-			System.out.println("Rewards->placeRewardOrder->creating jsonOrder");
+//			System.out.println("Rewards->placeRewardOrder->creating jsonOrder");
 			JSONObject jsonOrder = new JSONObject(stringOrder.toString());
 //			System.out.println("Order response: "+ jsonOrder.toString());
 
-			if (jsonOrder.has("success") && jsonOrder.getString("success") == "true") {
-				System.out.println("Output from Order is success == true .... \n");
-			} else {
-				System.out.println("Output from Order is success == false .... \n");
-			}
+//			if (jsonOrder.has("success") && jsonOrder.getString("success") == "true") {
+//				System.out.println("Output from Order is success == true .... \n");
+//			} else {
+//				System.out.println("Output from Order is success == false .... \n");
+//			}
 			
+			outputStreamWriter.close();
+			br.close();
+			conn.getInputStream().close();
 			conn.disconnect();
 			
-			System.out.println("Rewards->placeRewardOrder->setting jsonResponse");
+//			System.out.println("Rewards->placeRewardOrder->setting jsonResponse");
 	        jsonResponse = jsonOrder;
 			
 		} catch (MalformedURLException e) {
