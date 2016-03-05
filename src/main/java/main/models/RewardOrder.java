@@ -18,14 +18,160 @@ public class RewardOrder {
     private String reward_message;
     private String send_reward = "true";
     private String external_id;
+    
+    public RewardOrder() {
+    	
+    	//All defaults for testing purposes
+    	this.customer = "csc595g1_01";
+    	this.account_identifier = "csc595g1_01";
+    	this.campaign = "HomeSafety";
+    
+    	this.recipient_name = "Test Order";
+    	this.recipient_email = "csc595g1@gmail.com";
+    	this.sku = "TNGO-E-V-STD";
+    	this.amount = 1000;
+    	
+    	this.reward_from = "CSC595 Group1";
+    	this.reward_subject = "Here is your reward!";
+    	this.reward_message = "Way to go! Thanks!";
+    	this.send_reward = "true";
+    	this.external_id = "123456-XYZ";
+    	    	
+    }
+    
+    public RewardOrder(String name, String email, String sku, Integer amount) {
+    	
+    	this.customer = "csc595g1_01";
+    	this.account_identifier = "csc595g1_01";
+    	this.campaign = "HomeSafety";
+    
+    	this.recipient_name = name;
+    	this.recipient_email = email;
+    	this.sku = sku;
+    	this.amount = amount;
+    	
+    	this.reward_from = "CSC595 Group1";
+    	this.reward_subject = "Here is your reward!";
+    	this.reward_message = "Way to go! Thanks!";
+    	this.send_reward = "true";
+    	this.external_id = "123456-XYZ";
+    	    	
+    }
 
+    public RewardOrder(String name, String email, String sku, Integer amount, String external_id) {
+    	
+    	this.customer = "csc595g1_01";
+    	this.account_identifier = "csc595g1_01";
+    	this.campaign = "HomeSafety";
+    
+    	this.recipient_name = name;
+    	this.recipient_email = email;
+    	this.sku = sku;
+    	this.amount = amount;
+    	
+    	this.reward_from = "CSC595 Group1";
+    	this.reward_subject = "Here is your reward!";
+    	this.reward_message = "Way to go! Thanks!";
+    	this.send_reward = "true";
+    	
+    	this.external_id = external_id;
+    	    	
+    }
 
+    public RewardOrder(JSONObject jsonOrder) {
+        JSONObject jsonRecipient = new JSONObject();
+   	
+        //Default values, can be overwritten with setters
+    	this.customer = "csc595g1_01";
+    	this.account_identifier = "csc595g1_01";
+    	this.campaign = "HomeSafety";
+    
+		try {
+			JSONArray jsonRecipientInfo = jsonOrder.getJSONArray("recipient");
+	    	jsonRecipient = jsonRecipientInfo.getJSONObject(0);
+	    	this.recipient_name = jsonRecipient.getString("name");
+	    	jsonRecipient = jsonRecipientInfo.getJSONObject(1);
+	    	this.recipient_email = jsonRecipient.getString("email");
+	
+	    	this.sku = jsonOrder.getString("sku");
+	    	this.amount = Integer.valueOf(jsonOrder.getString("amount"));
+	    	
+	    	if (jsonOrder.getString("external_id").length() > 0) {
+	    		this.external_id = jsonOrder.getString("external_id");
+	    	} else {
+		    	this.external_id = "123456-XYZ";    		
+	    	}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+        //Default values, can be overwritten with setters
+		this.reward_from = "CSC595 Group1";
+    	this.reward_subject = "Here is your reward!";
+    	this.reward_message = "Way to go! Thanks!";
+    	this.send_reward = "true";
+    	    	    	
+    }
+
+    public String toString() {
+    	
+        JSONObject jsonResponse = new JSONObject();
+        JSONObject jsonRecipient = new JSONObject();
+        JSONArray jsonRecipientInfo = new JSONArray();
+
+        try {
+            jsonResponse.put("customer", this.customer);
+            jsonResponse.put("account_identifier", this.account_identifier);
+            jsonResponse.put("campaign", this.campaign);
+
+            jsonRecipient.put("name", this.recipient_name);
+            jsonRecipient.put("email", this.recipient_email);
+            jsonRecipientInfo.put(jsonRecipient);
+            jsonResponse.put("recipient",jsonRecipientInfo);
+
+            jsonResponse.put("sku", this.sku);
+
+            jsonResponse.put("amount", Integer.toString(this.amount.intValue()));
+
+            jsonResponse.put("reward_from", this.reward_from);
+            jsonResponse.put("reward_subject", this.reward_subject);
+            jsonResponse.put("reward_message", this.reward_message);
+            jsonResponse.put("send_reward", this.send_reward);
+            jsonResponse.put("external_id", this.external_id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonResponse.toString();
+    	
+    }
+    
     public JSONObject toJSON() {
 
         JSONObject jsonResponse = new JSONObject();
         JSONObject jsonRecipient = new JSONObject();
         JSONArray jsonRecipientInfo = new JSONArray();
 
+
+        //Should look like this, though many items are optional
+//    	{
+//		  "customer": "csc595g1_01",
+//		  "account_identifier": "csc595g1_01",
+//		  "campaign": "HomeSafety",
+//		  "recipient": {
+//		    "name": "Test Order",
+//		    "email": "csc595g1@gmail.com"
+//		  },
+//		  "sku": "TNGO-E-V-STD",
+//		  "amount": 1000,
+//		  "reward_from": "CSC595 Group1",
+//		  "reward_subject": "Here is your reward!",
+//		  "reward_message": "Way to go! Thanks!",
+//		  "send_reward": true,
+//		  "external_id": "123456-XYZ"
+//		}
+//
 
         try {
             jsonResponse.put("customer", this.customer);

@@ -36,6 +36,7 @@ import java.net.URL;
 
 import main.models.RewardEvent;
 import main.models.RewardEventDB;
+import main.models.RewardOrder;
 import main.models.RewardCatalog;
 import main.models.RewardCatalogDB;
 
@@ -498,9 +499,11 @@ public class Rewards {
 			conn.setRequestProperty("Authorization", "Basic Q29ubmVjdGVkSG9tZVRlc3Q6OVp2a0F0THQyQmt6QUtYdHlidU1sTVh4QjJ3SVpMWmNWQXJIU0d3cTJXWEVoZldmTkNmc0VFaXlv");
 			
 //			System.out.println("ERROR: "+ jsonRequest.toString());
+			
+			RewardOrder rewardOrder = buildOrderRequest(jsonRequest);
 
 			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(conn.getOutputStream());
-			outputStreamWriter.write(jsonRequest.toString());
+			outputStreamWriter.write(rewardOrder.toString());
 			outputStreamWriter.flush();
 
 //			System.out.println("ERROR: "+ requestJson.toString());
@@ -551,6 +554,15 @@ public class Rewards {
 		
         return jsonResponse;
         
+	}
+	
+	private RewardOrder buildOrderRequest(JSONObject jsonRequest) {
+		
+        RewardOrder orderRequest = new RewardOrder(jsonRequest);
+        
+        //Could override values of the order here if desired
+        
+		return orderRequest;
 	}
 	
 	private Boolean loadCatalogTable() {
