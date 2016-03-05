@@ -16,7 +16,7 @@ public class RewardOrder {
     private String reward_from;
     private String reward_subject;
     private String reward_message;
-    private String send_reward = "true";
+    private Boolean send_reward = Boolean.TRUE;
     private String external_id;
     
     public RewardOrder() {
@@ -34,7 +34,7 @@ public class RewardOrder {
     	this.reward_from = "CSC595 Group1";
     	this.reward_subject = "Here is your reward!";
     	this.reward_message = "Way to go! Thanks!";
-    	this.send_reward = "true";
+    	this.send_reward = Boolean.TRUE;
     	this.external_id = "123456-XYZ";
     	    	
     }
@@ -53,7 +53,7 @@ public class RewardOrder {
     	this.reward_from = "CSC595 Group1";
     	this.reward_subject = "Here is your reward!";
     	this.reward_message = "Way to go! Thanks!";
-    	this.send_reward = "true";
+    	this.send_reward = Boolean.TRUE;
     	this.external_id = "123456-XYZ";
     	    	
     }
@@ -72,7 +72,7 @@ public class RewardOrder {
     	this.reward_from = "CSC595 Group1";
     	this.reward_subject = "Here is your reward!";
     	this.reward_message = "Way to go! Thanks!";
-    	this.send_reward = "true";
+    	this.send_reward = Boolean.TRUE;
     	
     	this.external_id = external_id;
     	    	
@@ -108,7 +108,7 @@ public class RewardOrder {
 		this.reward_from = "CSC595 Group1";
     	this.reward_subject = "Here is your reward!";
     	this.reward_message = "Way to go! Thanks!";
-    	this.send_reward = "true";
+    	this.send_reward = Boolean.TRUE;
     	    	    	
     }
 
@@ -274,11 +274,11 @@ public class RewardOrder {
         this.reward_message = reward_message;
     }
 
-    public String getSend_reward() {
+    public Boolean getSend_reward() {
         return send_reward;
     }
 
-    public void setSend_reward(String send_reward) {
+    public void setSend_reward(Boolean send_reward) {
         this.send_reward = send_reward;
     }
 
