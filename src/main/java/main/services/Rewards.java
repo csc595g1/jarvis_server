@@ -479,17 +479,14 @@ public class Rewards {
 	/***************************/
 	private JSONObject placeRewardOrder(String requestJson) {
         System.out.println("Rewards->placeRewardOrder");
-        Boolean success = Boolean.FALSE;
 
+        JSONObject jsonResponse = new JSONObject();
         JSONObject jsonRequest = new JSONObject();;
         try {
 			jsonRequest = new JSONObject(requestJson);
-		} catch (JSONException e1) {
-			e1.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
-
-        
-        JSONObject jsonResponse = new JSONObject();
 
 		try {
 			URL url = new URL("https://sandbox.tangocard.com/raas/v1.1/orders");
@@ -521,17 +518,17 @@ public class Rewards {
 
 			
 			String output;
-			StringBuilder jsonOrder = new StringBuilder();
+			StringBuilder stringOrder = new StringBuilder();
 			System.out.println("Output from Server .... \n");
 			while ((output = br.readLine()) != null) {
 				System.out.println("placeRewardOrder->Placing an order from Tango...");
-				jsonOrder.append(output);
+				stringOrder.append(output);
 			}
 
-			JSONObject order = new JSONObject(jsonOrder.toString());
-			System.out.println("Order response: "+ order.toString());
+			JSONObject jsonOrder = new JSONObject(stringOrder.toString());
+//			System.out.println("Order response: "+ jsonOrder.toString());
 
-			if (order.has("success") && order.getString("success") == "true") {
+			if (jsonOrder.has("success") && jsonOrder.getString("success") == "true") {
 				System.out.println("Output from Order is success == true .... \n");
 			} else {
 				System.out.println("Output from Order is success == false .... \n");
@@ -539,22 +536,15 @@ public class Rewards {
 			
 			conn.disconnect();
 			
-			success = Boolean.TRUE;
-
+	        jsonResponse = jsonOrder;
 			
 		} catch (MalformedURLException e) {
-			success = Boolean.FALSE;
 			e.printStackTrace();
 		} catch (IOException e) {
-			success = Boolean.FALSE;
 			e.printStackTrace();
 		} catch (JSONException e) {
-			success = Boolean.FALSE;
 			e.printStackTrace();
-		} catch (Exception e) {
-			success = Boolean.FALSE;
-			e.printStackTrace();
-		}
+		} 
 		
         return jsonResponse;
         
