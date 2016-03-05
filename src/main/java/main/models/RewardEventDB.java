@@ -27,7 +27,7 @@ public class RewardEventDB {
         String tstamp = "";
         ArrayList<RewardEvent> rewardEvents = new ArrayList<RewardEvent>();
                
-        String sql = "SELECT eventId, userId, eventCategory, units, title, tstamp FROM " + TABLE_REWARD_EVENTS + " WHERE userId = '" + userId + "';";
+        String sql = "SELECT eventId, userId, eventCategory, units, title, tstamp FROM " + TABLE_REWARD_EVENTS + " WHERE userId = '" + userId + "' order by tstamp desc;";
         try{
             connection = getConnection();
             Statement stmt = connection.createStatement();
