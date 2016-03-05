@@ -503,7 +503,7 @@ public class Rewards {
 			outputStreamWriter.write(jsonRequest.toString());
 			outputStreamWriter.flush();
 
-			conn.getInputStream().close();
+//			conn.getInputStream().close();
 
 //			System.out.println("ERROR: "+ requestJson.toString());
 			
