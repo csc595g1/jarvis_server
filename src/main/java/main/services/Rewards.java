@@ -504,7 +504,7 @@ public class Rewards {
 			System.out.println("ERROR: "+ rewardOrder.toString());
 
 			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(conn.getOutputStream());
-			outputStreamWriter.write(rewardOrder.toString());
+			outputStreamWriter.write(rewardOrder.toJSON().toString());
 			outputStreamWriter.flush();
 
 //			System.out.println("ERROR: "+ requestJson.toString());
