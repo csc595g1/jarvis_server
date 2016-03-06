@@ -22,47 +22,29 @@ public class RewardCatalogDB {
     public boolean insertRewardCatalogItem(RewardCatalog catalog) throws SQLException{
         System.out.println("RewardCatalogDB->insertRewardCatalogItem");
         boolean isCreated = false;
-        int count = 0;
         String sql;
         
         try{
         	Statement statement;
             connection = getConnection();   
             
-            if (catalog.getDenomination() == 0) {
-                sql = "INSERT INTO " 
-                		+ TABLE_REWARD_CATALOG 
-                		+ " (brand,image_url,type,description,sku,is_variable,denomination,currency_code,available,country_code,tstamp) VALUES ("
-                		+ " '"+catalog.getBrand()+"'"
-                		+ ",'"+catalog.getImage_url()+"'"
-                		+ ",'"+catalog.getType()+"'"
-                		+ ",'"+catalog.getDescription()+"'"
-                		+ ",'"+catalog.getSku()+"'"
-                		+ ",'"+catalog.getIs_variable()+"'"
-                		+ ",'"+catalog.getDenomination()+"'"    /////////////Look into nulls
-                		+ ",'"+catalog.getCurrency_code()+"'"
-                		+ ",'"+catalog.getAvailable()+"'"
-                		+ ",'"+catalog.getCountry_code()+"'"
-                		+ ",'now');";
+            sql = "INSERT INTO " 
+            		+ TABLE_REWARD_CATALOG 
+            		+ " (brand,image_url,type,description,sku,is_variable,denomination,min_price,max_price,currency_code,available,country_code,tstamp) VALUES ("
+            		+ " '"+catalog.getBrand()+"'"
+            		+ ",'"+catalog.getImage_url()+"'"
+            		+ ",'"+catalog.getType()+"'"
+            		+ ",'"+catalog.getDescription()+"'"
+            		+ ",'"+catalog.getSku()+"'"
+            		+ ",'"+catalog.getIs_variable()+"'"
+            		+ ",'"+catalog.getDenomination()+"'"    
+            		+ ",'"+catalog.getMin_price()+"'"    
+            		+ ",'"+catalog.getMax_price()+"'"    
+            		+ ",'"+catalog.getCurrency_code()+"'"
+            		+ ",'"+catalog.getAvailable()+"'"
+            		+ ",'"+catalog.getCountry_code()+"'"
+            		+ ",'now');";
             	
-            } else {
-                sql = "INSERT INTO " 
-                		+ TABLE_REWARD_CATALOG 
-                		+ " (brand,image_url,type,description,sku,is_variable,min_price,max_price,currency_code,available,country_code,tstamp) VALUES ("
-                		+ " '"+catalog.getBrand()+"'"
-                		+ ",'"+catalog.getImage_url()+"'"
-                		+ ",'"+catalog.getType()+"'"
-                		+ ",'"+catalog.getDescription()+"'"
-                		+ ",'"+catalog.getSku()+"'"
-                		+ ",'"+catalog.getIs_variable()+"'"
-                		+ ",'"+catalog.getMin_price()+"'"    /////////////Look into nulls
-                		+ ",'"+catalog.getMax_price()+"'"    /////////////Look into nulls
-                		+ ",'"+catalog.getCurrency_code()+"'"
-                		+ ",'"+catalog.getAvailable()+"'"
-                		+ ",'"+catalog.getCountry_code()+"'"
-                		+ ",'now');";
-            	
-            }
             statement = connection.createStatement();
             statement.executeUpdate(sql);
             System.out.println("isCreate = " + isCreated);

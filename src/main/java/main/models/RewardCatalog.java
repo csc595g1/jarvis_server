@@ -40,10 +40,6 @@ public class RewardCatalog {
 		
 	}
 
-	
-	
-	
-	
 	public String getCatalogId() {
 		return catalogId;
 	}
