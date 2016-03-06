@@ -161,15 +161,9 @@ public class RewardCatalogDB {
             	country_code = rs.getString(13);
             	tstamp = rs.getString(14);
             	
-            	if (rs.getString(8) != null) {
-                	denomination = rs.getInt(8);
-            		min_price = 0;
-            		max_price = 0;
-            	} else {
-                	denomination = 0;
-            		min_price = rs.getInt(9);
-            		max_price = rs.getInt(10);
-            	}
+               	denomination = rs.getInt(8);
+           		min_price = rs.getInt(9);
+           		max_price = rs.getInt(10);
             	
             	rewardCatalog.add(new RewardCatalog(catalogId,brand,image_url,type,description,sku,is_variable,denomination,min_price,max_price,currency_code,available,country_code,tstamp));
             }
