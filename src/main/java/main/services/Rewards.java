@@ -515,6 +515,9 @@ public class Rewards {
 						+ conn.getResponseCode());
 			}
 
+			Boolean isCreated = createRewardOrderEvent(rewardOrder);
+			
+			
 //			System.out.println("Rewards->placeRewardOrder->getting BufferedReader");
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 				(conn.getInputStream())));
@@ -557,7 +560,33 @@ public class Rewards {
         
 	}
 	
+	private Boolean createRewardOrderEvent(RewardOrder rewardOrder) {
+	    System.out.println("Rewards->createRewardOrderEvent");
+
+        boolean isCreated = false;
+		
+        RewardEvent createRewardEvent = new RewardEvent("",
+        								rewardOrder.getRecipient_email(),
+        								"redeem",
+        								(rewardOrder.getAmount() * -1),
+        								rewardOrder.getSku(),
+										"");
+        
+		try{
+			isCreated = rewardEventDB.insertRewardEvent(createRewardEvent);
+		}
+		catch(SQLException e){
+	        System.out.println("sql exception in service");
+	        e.getMessage();
+	        e.printStackTrace();
+		}
+		
+		return isCreated;
+		
+	}
+	
 	private RewardOrder buildOrderRequest(JSONObject jsonRequest) {
+	    System.out.println("Rewards->buildOrderRequest");
 		
         RewardOrder orderRequest = new RewardOrder(jsonRequest);
         
