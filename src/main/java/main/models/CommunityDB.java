@@ -9,8 +9,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -33,7 +36,40 @@ public class CommunityDB {
     
     
     
-    
+    public List<CommunityPostModel> getPostList() throws SQLException{
+        List<CommunityPostModel> returnList = new ArrayList();
+        
+        String sql = "select * from " + TABLE_COMMUNITY_POST_TBL + ";";
+        
+        try{
+            connection = getConnection();
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            System.out.println("debug query get post list");
+            System.out.println("-------------------------");
+            while(rs.next()){
+                CommunityPostModel model = new CommunityPostModel();
+                model.post_id = rs.getInt(1);
+                model.email = rs.getString(2);
+                model.content = rs.getString(3);
+                model.dttm = rs.getString(4);
+                returnList.add(model);
+                System.out.println(model.post_id+", " + model.email+", " +model.content+", " +model.dttm);
+            }
+        }
+        catch(URISyntaxException e){
+            e.getMessage();
+            e.printStackTrace();
+            return null;
+        }
+        catch(SQLException e){
+            e.getMessage();
+            e.printStackTrace();
+            return null;
+        }
+        finally{connection.close();}
+        return returnList;
+    }
     
     
     /**

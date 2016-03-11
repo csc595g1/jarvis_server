@@ -34,8 +34,10 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 import main.models.CommunityDB;
+import main.models.CommunityPostModel;
 
 /**
  *
@@ -47,12 +49,40 @@ public class CommunityService {
     @GET
     @Path("/getPosts")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPosts(){
+    public Response getPosts()throws JSONException{
         CommunityDB commDB = new CommunityDB();
+        List<CommunityPostModel> modelList;
+        JSONObject jsonResp = new JSONObject();
+        JSONArray jarray = new JSONArray();
         
+        try{
+            modelList = commDB.getPostList();
+            for(CommunityPostModel model:modelList){
+                jsonResp = new JSONObject();
+                jsonResp.put("post_id", model.post_id);
+                jsonResp.put("email",model.email);
+                jsonResp.put("content",model.content);
+                jsonResp.put("dttm",model.dttm);
+                jarray.put(jsonResp);
+            }
+        }catch (SQLException e) {
+			// TODO Auto-generated catch block/events
+			e.printStackTrace();
+                        return Response.status(Response.Status.NO_CONTENT).build();
+		}
+        catch (JSONException e) {
+			// TODO Auto-generated catch block/events
+			e.printStackTrace();
+                        return Response.status(Response.Status.NO_CONTENT).build();
+		}
         //just to instantiate everything for now...
-        System.out.println("building tables....");
-        return Response.status(Response.Status.PRECONDITION_FAILED).build();
-
+        //System.out.println("building tables....");
+        //return Response.status(Response.Status.NO_CONTENT).build();
+        if(jarray.length() == 0){
+                    return Response.status(Response.Status.NO_CONTENT).build();
+                }
+        jsonResp = new JSONObject();
+        jsonResp.put("posts", jarray);
+        return Response.status(Response.Status.OK).entity(jsonResp).build();
     }
 }
