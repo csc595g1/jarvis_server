@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.TimeZone;
 import main.models.CommunityDB;
 import main.models.CommunityPostModel;
+import main.models.UserLoginDB;
 
 /**
  *
@@ -58,9 +59,11 @@ public class CommunityService {
         try{
             modelList = commDB.getPostList();
             for(CommunityPostModel model:modelList){
+                String name = new UserLoginDB().getUserName(model.email);
                 jsonResp = new JSONObject();
                 jsonResp.put("post_id", model.post_id);
                 jsonResp.put("email",model.email);
+                jsonResp.put("name", name);
                 jsonResp.put("content",model.content);
                 jsonResp.put("dttm",model.dttm);
                 jarray.put(jsonResp);

@@ -76,6 +76,31 @@ public class UserLoginDB {
         return returnBool;
     }
     
+    public String getUserName(String email){
+        String name = null;
+        String sql = "select user_first_name || ' ' || user_last_name as name from "+ TABLE_NAME_USER_PERS_INFO + " where user_email = '" + email + "';";
+        try{
+            connection = getConnection();
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            while(rs.next()){
+                name = rs.getString(1);
+            }
+            connection.close();
+            return name;
+        }
+        catch(URISyntaxException e){
+            e.getMessage();
+            e.printStackTrace();
+            return null;
+        }
+        catch(SQLException e){
+            e.getMessage();
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
     public UserLogin getUserInformation(String email){
         UserLogin temp;
         String fn = "";
