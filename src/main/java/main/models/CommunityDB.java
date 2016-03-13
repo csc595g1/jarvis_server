@@ -35,6 +35,33 @@ public class CommunityDB {
     private final String TABLE_UPVOTE_REPLY_TBL = "upvote_reply_tbl";
     
     
+    public int getReplyCountForPost(int post_id) throws SQLException{
+        int count = 0;
+        String sql = "select count(*) from community_reply_tbl where post_id = " + post_id + ";";
+        try{
+            connection = getConnection();
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            System.out.println("debug query get post list");
+            System.out.println("-------------------------");
+            while(rs.next()){
+                count = rs.getInt(1);
+            }
+        }
+        catch(URISyntaxException e){
+            e.getMessage();
+            e.printStackTrace();
+            return 0;
+        }
+        catch(SQLException e){
+            e.getMessage();
+            e.printStackTrace();
+            return 0;
+        }
+        finally{connection.close();}
+        System.out.println(count);
+        return count;
+    }
     
     public List<CommunityPostModel> getPostList() throws SQLException{
         List<CommunityPostModel> returnList = new ArrayList();
