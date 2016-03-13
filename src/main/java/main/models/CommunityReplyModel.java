@@ -25,7 +25,7 @@ public class CommunityReplyModel {
             }
             
             if(input.has("email")){
-                model.email = input.getString("post_id");
+                model.email = input.getString("email");
             }
             
             if(input.has("content")){
