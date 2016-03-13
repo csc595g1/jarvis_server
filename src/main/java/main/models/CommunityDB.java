@@ -35,8 +35,9 @@ public class CommunityDB {
     private final String TABLE_UPVOTE_REPLY_TBL = "upvote_reply_tbl";
     
     
-    public boolean insertReply(CommunityReplyModel model) throws SQLException{
+    public boolean insertReply(CommunityReplyModel model) throws SQLException, URISyntaxException{
         String sql = "insert into " + TABLE_COMMUNITY_REPLY_TBL + " (post_id,email,content,dttm) values (" + model.post_id + ",'" + model.email + "','" + model.content + "',now());";
+        connection = getConnection();
         Statement stmt = connection.createStatement();
         int i = stmt.executeUpdate(sql);
         connection.close();
