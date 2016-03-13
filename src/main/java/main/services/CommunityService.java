@@ -62,11 +62,9 @@ public class CommunityService {
             modelList = commDB.getRepliesForPost(convertPostId);
             for(CommunityReplyModel model : modelList){
                 String name = new UserLoginDB().getUserName(model.email);
-                int count = commDB.getReplyCountForPost(convertPostId);
                 jsonResp = new JSONObject();
                 jsonResp.put("reply_id", model.reply_id);
                 jsonResp.put("post_id", model.post_id);
-                jsonResp.put("countOfReplies",count);
                 jsonResp.put("email", model.email);
                 jsonResp.put("name", name);
                 jsonResp.put("content", model.content);
@@ -106,8 +104,10 @@ public class CommunityService {
             modelList = commDB.getPostList();
             for(CommunityPostModel model:modelList){
                 String name = new UserLoginDB().getUserName(model.email);
+                int count = commDB.getReplyCountForPost(model.post_id);
                 jsonResp = new JSONObject();
                 jsonResp.put("post_id", model.post_id);
+                jsonResp.put("countOfReplies",count);
                 jsonResp.put("email",model.email);
                 jsonResp.put("name", name);
                 jsonResp.put("content",model.content);
