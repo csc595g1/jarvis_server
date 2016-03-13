@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.TimeZone;
 import main.models.CommunityDB;
 import main.models.CommunityPostModel;
+import main.models.CommunityReplyModel;
 import main.models.UserLoginDB;
 
 /**
@@ -46,6 +47,49 @@ import main.models.UserLoginDB;
  */
 @Path("/community")
 public class CommunityService {
+    
+    @GET
+    @Path("/replies")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRepliesForPost(@QueryParam("post_id") String post_id) throws JSONException{
+        int convertPostId = Integer.parseInt(post_id);
+        CommunityDB commDB = new CommunityDB();
+        List<CommunityReplyModel> modelList;
+        JSONObject jsonResp = new JSONObject();
+        JSONArray jarray = new JSONArray();
+        
+        try{
+            modelList = commDB.getRepliesForPost(convertPostId);
+            for(CommunityReplyModel model : modelList){
+                String name = new UserLoginDB().getUserName(model.email);
+                jsonResp = new JSONObject();
+                jsonResp.put("reply_id", model.reply_id);
+                jsonResp.put("post_id", model.post_id);
+                jsonResp.put("email", model.email);
+                jsonResp.put("name", name);
+                jsonResp.put("content", model.content);
+                jsonResp.put("dttm", model.dttm);
+                jarray.put(jsonResp);
+            }
+        }
+        catch (SQLException e) {
+			// TODO Auto-generated catch block/events
+			e.printStackTrace();
+                        return Response.status(Response.Status.NO_CONTENT).build();
+		}
+        catch (JSONException e) {
+			// TODO Auto-generated catch block/events
+			e.printStackTrace();
+                        return Response.status(Response.Status.NO_CONTENT).build();
+		}
+        
+        if(jarray.length() == 0){
+                    return Response.status(Response.Status.NO_CONTENT).build();
+                }
+        jsonResp = new JSONObject();
+        jsonResp.put("replies", jarray);
+        return Response.status(Response.Status.OK).entity(jsonResp).build();
+    }
     
     @GET
     @Path("/getPosts")

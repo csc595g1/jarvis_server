@@ -71,6 +71,39 @@ public class CommunityDB {
         return returnList;
     }
     
+    public List<CommunityReplyModel> getRepliesForPost(int post_id) throws SQLException{
+        List<CommunityReplyModel> modelList = new ArrayList();
+        String sql = "select * from " + TABLE_COMMUNITY_REPLY_TBL + " where post_id = " + post_id+";";
+        try{
+            connection = getConnection();
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            System.out.println("debug query get reply list");
+            System.out.println("-------------------------");
+            while(rs.next()){
+                CommunityReplyModel model = new CommunityReplyModel();
+                model.reply_id = rs.getInt(1);
+                model.post_id = rs.getInt(2);
+                model.email = rs.getString(3);
+                model.content = rs.getString(4);
+                model.dttm = rs.getString(5);
+                modelList.add(model);
+            }
+        }
+        catch(URISyntaxException e){
+            e.getMessage();
+            e.printStackTrace();
+            return null;
+        }
+        catch(SQLException e){
+            e.getMessage();
+            e.printStackTrace();
+            return null;
+        }
+        finally{connection.close();}
+        return modelList;
+    }
+    
     
     /**
      * Build tables in following order:
