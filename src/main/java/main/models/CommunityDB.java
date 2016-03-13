@@ -59,7 +59,7 @@ public class CommunityDB {
             return 0;
         }
         finally{connection.close();}
-        System.out.println(count);
+        System.out.println("Reply count: " + count);
         return count;
     }
     
