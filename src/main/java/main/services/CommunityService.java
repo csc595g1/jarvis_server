@@ -48,6 +48,16 @@ import main.models.UserLoginDB;
 @Path("/community")
 public class CommunityService {
     
+    @POST
+    @Path("/reply")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response postReply(String requestJson) throws JSONException, SQLException{
+        CommunityReplyModel model = CommunityReplyModel.parseReply(requestJson);
+        CommunityDB db = new CommunityDB();
+        db.insertReply(model);
+        return Response.status(Response.Status.OK).build();
+    }
+    
     @GET
     @Path("/replies")
     @Produces(MediaType.APPLICATION_JSON)
