@@ -30,6 +30,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class CommunityService {
     @POST
     @Path("/reply")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response postReply(String requestJson) throws JSONException, SQLException{
+    public Response postReply(String requestJson) throws JSONException, SQLException,URISyntaxException{
         CommunityReplyModel model = CommunityReplyModel.parseReply(requestJson);
         CommunityDB db = new CommunityDB();
         db.insertReply(model);
