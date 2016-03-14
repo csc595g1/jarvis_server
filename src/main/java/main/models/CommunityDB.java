@@ -35,6 +35,41 @@ public class CommunityDB {
     private final String TABLE_UPVOTE_REPLY_TBL = "upvote_reply_tbl";
     
     
+    public void insertPostUpvote(String email, int post_id)throws SQLException, URISyntaxException{
+        String sql = "insert into " + TABLE_UPVOTE_POST_TBL + "(post_id,email,dttm) values (" + post_id + ",'" + email + "'," + "now());";
+        connection = getConnection();
+        Statement stmt = connection.createStatement();
+        stmt.executeUpdate(sql);
+        connection.close();
+    }
+    
+    public boolean hasUserUpvoted(String email, int post_id)throws SQLException, URISyntaxException{
+        boolean returnBool = false;
+        int count = 0;
+        String sql = "select count(*) from " + TABLE_UPVOTE_POST_TBL + " where email = '" + email + "' and post_id = " + post_id+";";
+        connection = getConnection();
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+        while(rs.next()){
+            count = rs.getInt(1);
+        }
+        connection.close();
+        return count > 0;
+    }
+    
+    public int getUpvoteCountForPost(int post_id)throws SQLException, URISyntaxException{
+        int count = 0;
+        String sql = "select count(*) from " + TABLE_UPVOTE_POST_TBL + " where post_id = " + post_id+";";
+        connection = getConnection();
+        Statement stmt = connection.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+        while(rs.next()){
+            count = rs.getInt(1);
+        }
+        connection.close();
+        return count;
+    }
+    
     public boolean insertReply(CommunityReplyModel model) throws SQLException, URISyntaxException{
         String sql = "insert into " + TABLE_COMMUNITY_REPLY_TBL + " (post_id,email,content,dttm) values (" + model.post_id + ",'" + model.email + "','" + model.content + "',now());";
         connection = getConnection(); 

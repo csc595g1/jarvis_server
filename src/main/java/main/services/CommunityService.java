@@ -49,6 +49,40 @@ import main.models.UserLoginDB;
 @Path("/community")
 public class CommunityService {
     
+    @GET
+    @Path("/upvotespost")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUpvotesForPost(@QueryParam("post_id") String post_id)throws SQLException,JSONException{
+        int convertPostId = Integer.parseInt(post_id);
+        CommunityDB commDB = new CommunityDB();
+        int count = commDB.getReplyCountForPost(convertPostId);
+        JSONObject obj = new JSONObject();
+        obj.put("count", count);
+        return Response.status(Response.Status.OK).entity(obj).build();
+    }
+    
+    @GET
+    @Path("/userupvoted")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUpvotesForUserByPost(@QueryParam("post_id") String post_id, @QueryParam("email") String email)throws SQLException,JSONException,URISyntaxException{
+        int convertPostId = Integer.parseInt(post_id);
+        CommunityDB commDB = new CommunityDB();
+        boolean hasPosted = commDB.hasUserUpvoted(email, convertPostId);
+        JSONObject obj = new JSONObject();
+        obj.put("hasUserUpvoted", hasPosted);
+        return Response.status(Response.Status.OK).entity(obj).build();
+    }
+    
+    @POST
+    @Path("/postupvote")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response insertUpvoteForUser(@QueryParam("post_id") String post_id, @QueryParam("email") String email)throws SQLException,JSONException,URISyntaxException{
+        int convertPostId = Integer.parseInt(post_id);
+        CommunityDB commDB = new CommunityDB();
+        commDB.insertPostUpvote(email, convertPostId);
+        return Response.status(Response.Status.OK).build();
+    }
+    
     @POST
     @Path("/reply")
     @Consumes(MediaType.APPLICATION_JSON)
