@@ -34,6 +34,13 @@ public class CommunityDB {
     private final String TABLE_UPVOTE_POST_TBL = "upvote_post_tbl";
     private final String TABLE_UPVOTE_REPLY_TBL = "upvote_reply_tbl";
     
+    public void insertPost(CommunityPostModel model)throws SQLException, URISyntaxException{
+        String sql = "insert into " + TABLE_COMMUNITY_POST_TBL + "(email,content,dttm) values ('" + model.email + "','" + model.content + "',now());";
+        connection = getConnection();
+        Statement stmt = connection.createStatement();
+        stmt.executeUpdate(sql);
+        connection.close();
+    }
     
     public void insertPostUpvote(String email, int post_id)throws SQLException, URISyntaxException{
         String sql = "insert into " + TABLE_UPVOTE_POST_TBL + "(post_id,email,dttm) values (" + post_id + ",'" + email + "'," + "now());";

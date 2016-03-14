@@ -5,6 +5,9 @@
  */
 package main.models;
 
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+
 /**
  *
  * @author Ed
@@ -14,4 +17,21 @@ public class CommunityPostModel {
     public String email;
     public String content;
     public String dttm;
+    
+    public static CommunityPostModel parsePostJson(String json){
+        CommunityPostModel model = new CommunityPostModel();
+        try{
+            JSONObject input = new JSONObject(json);
+            if(input.has("email")){
+                model.email = input.getString("email");
+            }
+            
+            if(input.has("content")){
+                model.content = input.getString("content");
+            }
+            return model;
+        }
+        catch(JSONException e){}
+        return model;
+    }
 }

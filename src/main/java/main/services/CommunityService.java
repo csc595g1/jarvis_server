@@ -49,6 +49,16 @@ import main.models.UserLoginDB;
 @Path("/community")
 public class CommunityService {
     
+    @POST
+    @Path("/post")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response insertPost(String json)throws SQLException,URISyntaxException{
+        CommunityPostModel model = CommunityPostModel.parsePostJson(json);
+        CommunityDB commDB = new CommunityDB();
+        commDB.insertPost(model);
+        return Response.status(Response.Status.OK).build();
+    }
+    
     @GET
     @Path("/upvotespost")
     @Produces(MediaType.APPLICATION_JSON)
