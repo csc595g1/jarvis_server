@@ -32,14 +32,19 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 import main.models.CommunityDB;
 import main.models.CommunityPostModel;
 import main.models.CommunityReplyModel;
+import main.models.RewardEvent;
+import main.models.RewardEventDB;
 import main.models.UserLoginDB;
 
 /**
@@ -53,9 +58,24 @@ public class CommunityService {
     @Path("/post")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response insertPost(String json)throws SQLException,URISyntaxException{
+        //insert upvote
         CommunityPostModel model = CommunityPostModel.parsePostJson(json);
         CommunityDB commDB = new CommunityDB();
         commDB.insertPost(model);
+        
+        //get email of poster
+        String email = commDB.getEmailForPost(model.post_id);
+        
+        //insert points for upvote
+        RewardEvent event = new RewardEvent();
+        event.setEventCategory("Upvote");
+        event.setTitle("Upvoted Post");
+        event.setUnits(10);
+        event.setUserId(model.email);
+        RewardEventDB eventdb = new RewardEventDB();
+        eventdb.insertRewardEvent(event);
+        
+        //return OK
         return Response.status(Response.Status.OK).build();
     }
     
