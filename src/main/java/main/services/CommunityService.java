@@ -63,18 +63,6 @@ public class CommunityService {
         CommunityDB commDB = new CommunityDB();
         commDB.insertPost(model);
         
-        //get email of poster
-        String email = commDB.getEmailForPost(model.post_id);
-        
-        //insert points for upvote
-        RewardEvent event = new RewardEvent();
-        event.setEventCategory("Upvote");
-        event.setTitle("Upvoted Post");
-        event.setUnits(10);
-        event.setUserId(model.email);
-        RewardEventDB eventdb = new RewardEventDB();
-        eventdb.insertRewardEvent(event);
-        
         //return OK
         return Response.status(Response.Status.OK).build();
     }
@@ -110,6 +98,20 @@ public class CommunityService {
         int convertPostId = Integer.parseInt(post_id);
         CommunityDB commDB = new CommunityDB();
         commDB.insertPostUpvote(email, convertPostId);
+        
+        //get email of poster
+        String origemail = commDB.getEmailForPost(Integer.parseInt(post_id));
+        
+        //insert points for upvote
+        RewardEvent event = new RewardEvent();
+        event.setEventCategory("Upvote");
+        event.setTitle("Upvoted Post");
+        event.setUnits(10);
+        event.setUserId(origemail);
+        RewardEventDB eventdb = new RewardEventDB();
+        eventdb.insertRewardEvent(event);
+        
+        
         return Response.status(Response.Status.OK).build();
     }
     
