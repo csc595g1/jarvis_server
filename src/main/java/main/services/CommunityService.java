@@ -131,6 +131,16 @@ public class CommunityService {
         CommunityReplyModel model = CommunityReplyModel.parseReply(requestJson);
         CommunityDB db = new CommunityDB();
         db.insertReply(model);
+        
+        //insert points for upvote
+        RewardEvent event = new RewardEvent();
+        event.setEventCategory("Reply");
+        event.setTitle("Replied to Post");
+        event.setUnits(10);
+        event.setUserId(model.email);
+        RewardEventDB eventdb = new RewardEventDB();
+        eventdb.insertRewardEvent(event);
+        
         return Response.status(Response.Status.OK).build();
     }
     
