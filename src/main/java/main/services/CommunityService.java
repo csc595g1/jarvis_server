@@ -63,6 +63,15 @@ public class CommunityService {
         CommunityDB commDB = new CommunityDB();
         commDB.insertPost(model);
         
+        //insert points for upvote
+        RewardEvent event = new RewardEvent();
+        event.setEventCategory("Community");
+        event.setTitle("Posted to Community");
+        event.setUnits(50);
+        event.setUserId(model.email);
+        RewardEventDB eventdb = new RewardEventDB();
+        eventdb.insertRewardEvent(event);
+        
         //return OK
         return Response.status(Response.Status.OK).build();
     }
